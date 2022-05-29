@@ -1,0 +1,10 @@
+{
+    "trens": [ 
+        {"id":1,"nome":"TREM A","carro":[{"id":1,"nome":"CARRO A1"},{"id":2,"nome":"CARRO A2"}] },
+        {"id":2,"nome":"TREM B","carro":[{"id":3,"nome":"CARRO B1"},{"id":4,"nome":"CARRO B2"}] },
+        {"id":3,"nome":"TREM C","carro":[{"id":5,"nome":"CARRO C1"},{"id":6,"nome":"CARRO C2"}] }
+    
+    ]
+
+    
+}
