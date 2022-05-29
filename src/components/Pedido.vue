@@ -7,13 +7,16 @@
       </div>
       <div style="width: 100px">
         <label for="trem">Trem</label>
-        <select name="trem" id="trem">
-          <option value="">Selecione</option>
+        <select name="trem" v-model="trem" id="trem">
+          <option disabled value="">Selecione</option>
+          <option v-for="trem in trens" :key="trem.id" :value="trem.nome">
+            {{ trem.nome }}
+          </option>
         </select>
       </div>
       <div style="width: 100px">
         <label for="carro">carro</label>
-        <select name="carro" id="carro">
+        <select name="carro" :disabled="trem == ''" id="carro">
           <option value="">Selecione</option>
         </select>
       </div>
@@ -27,7 +30,11 @@
       </div>
       <div style="width: 100px">
         <label for="in">IN</label>
-        <input type="text" name="in" id="in" />
+        <select name="in" id="in">
+          <option value="">Selecione</option>
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
       </div>
       <div style="width: 100px">
         <label for="local">Local</label>
@@ -40,14 +47,29 @@
 <script>
 export default {
   name: "Pedido",
+  data() {
+    return {
+      trem: "",
+      trens: null,
+    };
+  },
+  methods: {
+    async getTrens() {
+      const req = await fetch("http://localhost:3000/trens");
+      const data = await req.json();
+      this.trens = data;
+    },
+  },
+  mounted() {
+    this.getTrens();
+  },
 };
 </script>
 
 <style scoped>
 main {
-  height:100vh;
+  height: 100vh;
   background-color: #64fb61;
-
 }
 
 table {
@@ -61,6 +83,10 @@ tr:first-child {
 
 tr:nth-child(2) {
   background-color: #ffffff;
+}
+select:disabled {
+  opacity: 1;
+  background-color: white;
 }
 
 #btn-gerar-pedido {
