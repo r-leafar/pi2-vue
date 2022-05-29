@@ -1,27 +1,37 @@
 <template>
   <main>
     <div id="secao-superior">
-      <div style="display: inline-block">
-        <table>
-          <tr>
-            <th style="width: 10%">PEDIDO</th>
-            <th style="width: 20%">TREM</th>
-            <th style="width: 20%">CARRO</th>
-            <th style="width: 25%">DESCRICAO DA FALHA</th>
-            <th style="width: 10%">P/T</th>
-            <th style="width: 10%">IN</th>
-            <th>LOCAL</th>
-          </tr>
-          <tr>
-            <td>sasas</td>
-            <td>sasas</td>
-            <td>sasas</td>
-            <td>sasas</td>
-            <td>sasas</td>
-            <td>sasas</td>
-            <td>sasas</td>
-          </tr>
-        </table>
+      <div style="width: 65px">
+        <label for="pedido">Pedido</label>
+        <input type="text" name="pedido" id="pedido" />
+      </div>
+      <div style="width: 100px">
+        <label for="trem">Trem</label>
+        <select name="trem" id="trem">
+          <option value="">Selecione</option>
+        </select>
+      </div>
+      <div style="width: 100px">
+        <label for="carro">carro</label>
+        <select name="carro" id="carro">
+          <option value="">Selecione</option>
+        </select>
+      </div>
+      <div style="width: 230px">
+        <label for="descricao">Descricao da Falha</label>
+        <input type="text" name="descricao" id="descricao" />
+      </div>
+      <div style="width: 100px">
+        <label for="pt">P/T</label>
+        <input type="text" name="pt" id="pt" />
+      </div>
+      <div style="width: 100px">
+        <label for="in">IN</label>
+        <input type="text" name="in" id="in" />
+      </div>
+      <div style="width: 100px">
+        <label for="local">Local</label>
+        <input type="text" name="local" id="local" />
       </div>
       <button id="btn-gerar-pedido">Gerar Pedido</button>
     </div>
@@ -35,7 +45,9 @@ export default {
 
 <style scoped>
 main {
+  height:100vh;
   background-color: #64fb61;
+
 }
 
 table {
@@ -50,15 +62,40 @@ tr:first-child {
 tr:nth-child(2) {
   background-color: #ffffff;
 }
+
 #btn-gerar-pedido {
   border: 0px;
-  margin-left:13%;
+  margin-left: 20%;
   width: 10%;
   border-radius: 50%;
   height: 100px;
   background-color: #4784fb;
+  font-weight: bold;
+}
+
+#btn-gerar-pedido:hover {
+  background-color: #b9891f;
 }
 #secao-superior {
+  width: 75%;
+  height: 50px;
+  margin-top: 15px;
+  display: flex;
+}
+
+label {
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+  height: 50%;
+  text-align: center;
   width: 100%;
+  background-color: #c4c4c4;
+}
+
+input,
+select {
+  width: 100%;
+  overflow: hidden;
 }
 </style>
