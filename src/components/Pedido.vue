@@ -7,7 +7,7 @@
       </div>
       <div style="width: 100px">
         <label for="trem">Trem</label>
-        <select name="trem" v-model="trem" id="trem">
+        <select v-on:change="MontarListaCarros" name="trem" v-model="trem" id="trem">
           <option disabled value="">Selecione</option>
           <option v-for="trem in trens" :key="trem.id" :value="trem.nome">
             {{ trem.nome }}
@@ -16,8 +16,11 @@
       </div>
       <div style="width: 100px">
         <label for="carro">carro</label>
-        <select name="carro" :disabled="trem == ''" id="carro">
-          <option value="">Selecione</option>
+        <select name="carro" :disabled="trem == ''" v-model="carro" id="carro">
+          <option disabled value="">Selecione</option>
+          <option v-for="carro in carros" :key="carro.id" :value="carro.nome">
+            {{ carro.nome }}
+          </option>
         </select>
       </div>
       <div style="width: 230px">
@@ -51,6 +54,8 @@ export default {
     return {
       trem: "",
       trens: null,
+      carro:"",
+      carros:null
     };
   },
   methods: {
@@ -59,6 +64,12 @@ export default {
       const data = await req.json();
       this.trens = data;
     },
+    MontarListaCarros(){
+      if(this.trens!== null){
+       let temp = this.trens.filter(c=> c.nome==this.trem);
+       this.carros = temp[0]["carros"];
+      }
+    }
   },
   mounted() {
     this.getTrens();
