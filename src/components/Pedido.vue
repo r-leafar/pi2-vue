@@ -3,7 +3,7 @@
     <div id="secao-superior">
       <div style="width: 65px">
         <label for="pedido">Pedido</label>
-        <input type="text" name="pedido" id="pedido" />
+        <input type="text" name="pedido" id="pedido" disabled />
       </div>
       <div style="width: 100px">
         <label for="trem">Trem</label>
@@ -23,23 +23,27 @@
           </option>
         </select>
       </div>
-      <div style="width: 230px">
+      <div style="width: 300px">
         <label for="descricao">Descricao da Falha</label>
         <input type="text" name="descricao" id="descricao" />
       </div>
       <div style="width: 100px">
         <label for="pt">P/T</label>
-        <input type="text" name="pt" id="pt" />
+         <select name="pt" id="pt">
+          <option disabled value="">Selecione</option>
+          <option value="true">P</option>
+          <option value="false">T</option>
+        </select>
       </div>
       <div style="width: 100px">
         <label for="in">IN</label>
         <select name="in" id="in">
-          <option value="">Selecione</option>
+          <option disabled value="">Selecione</option>
           <option value="true">Sim</option>
           <option value="false">Não</option>
         </select>
       </div>
-      <div style="width: 100px">
+      <div style="width: 150px">
         <label for="local">Local</label>
         <input type="text" name="local" id="local" />
       </div>
@@ -60,7 +64,7 @@ export default {
   },
   methods: {
     async getTrens() {
-      const req = await fetch("http://localhost:3000/trens");
+      const req = await fetch("http://192.168.15.21:3000/trens");
       const data = await req.json();
       this.trens = data;
     },
@@ -102,8 +106,8 @@ select:disabled {
 
 #btn-gerar-pedido {
   border: 0px;
-  margin-left: 20%;
-  width: 10%;
+  margin-left: 5%;
+  width: 15%;
   border-radius: 50%;
   height: 100px;
   background-color: #4784fb;
@@ -114,7 +118,7 @@ select:disabled {
   background-color: #b9891f;
 }
 #secao-superior {
-  width: 75%;
+  width: 100%;
   height: 50px;
   margin-top: 15px;
   display: flex;
@@ -134,5 +138,7 @@ input,
 select {
   width: 100%;
   overflow: hidden;
+  text-align: center;
+  opacity: 1;
 }
 </style>
