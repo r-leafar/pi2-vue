@@ -5,13 +5,20 @@
       <input id="login" type="text" name="login" />
       <label>Senha:</label>
       <input id="senha" type="password" name="senha" />
-      <button>Acessar</button>
+      <button v-on:click="getLogin">Acessar</button>
     </form>
   </div>
 </template>
 <script>
 export default {
-    name:"Login"
+    name:"Login",
+    methods: {
+      getLogin(evt){
+              evt.preventDefault()
+              this.$router.push('/pedido')
+          
+      }
+    }
 }
 </script>
 <style scoped>
