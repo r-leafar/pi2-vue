@@ -1,53 +1,121 @@
 <template>
   <main>
-    <div id="secao-superior">
-      <div style="width: 65px">
-        <label for="pedido">Pedido</label>
-        <input type="text" name="pedido" id="pedido" disabled />
+    <div id="conteudo4">
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>PEDIDO</th>
+              <th>TREM</th>
+              <th>CARRO</th>
+              <th>DESCRICAO DA FALHA</th>
+              <th>P/T</th>
+              <th>IN</th>
+              <th>LOCAL</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>###</td>
+              <td>
+                <select
+                  v-on:change="MontarListaCarros"
+                  name="trem"
+                  v-model="trem"
+                  id="trem"
+                >
+                  <option disabled value="">Selecione</option>
+                  <option
+                    v-for="trem in trens"
+                    :key="trem.id"
+                    :value="trem.nome"
+                  >
+                    {{ trem.nome }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <select
+                  name="carro"
+                  :disabled="trem == ''"
+                  v-model="carro"
+                  id="carro"
+                >
+                  <option disabled value="">Selecione</option>
+                  <option
+                    v-for="carro in carros"
+                    :key="carro.id"
+                    :value="carro.nome"
+                  >
+                    {{ carro.nome }}
+                  </option>
+                </select>
+              </td>
+              <td><input type="text" name="descricao" id="descricao" /></td>
+              <td>
+                <select name="pt" id="pt">
+                  <option disabled value="">Selecione</option>
+                  <option value="true">P</option>
+                  <option value="false">T</option>
+                </select>
+              </td>
+              <td>
+                <select name="in" id="in">
+                  <option disabled value="">Selecione</option>
+                  <option value="true">Sim</option>
+                  <option value="false">Não</option>
+                </select>
+              </td>
+              <td><input type="text" name="local" id="local" /></td>
+              <td>
+                <select name="status" id="status">
+                  <option disabled value="">Selecione</option>
+                  <option value="true">Analise</option>
+                  <option value="false">Finalizado</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div style="width: 100px">
-        <label for="trem">Trem</label>
-        <select v-on:change="MontarListaCarros" name="trem" v-model="trem" id="trem">
-          <option disabled value="">Selecione</option>
-          <option v-for="trem in trens" :key="trem.id" :value="trem.nome">
-            {{ trem.nome }}
-          </option>
-        </select>
+      <div>
+        <table id="tabelaC">
+          <thead>
+            <tr>
+              <th>CARRO</th>
+              <th>EQUIPAMENTO</th>
+              <th>DEFEITO</th>
+              <th>REPARO</th>
+              <th>DATA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ssgsgsgs</td>
+              <td>sgsgsgsg</td>
+              <td>sgsgsgsgs</td>
+              <td>sgsgsgsgs</td>
+              <td>sgsgsgsgsg</td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <table id="tabelaD">
+            <thead>
+              <tr>
+                <th>OBSERVAÇÃO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ADADAAD</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div style="width: 100px">
-        <label for="carro">carro</label>
-        <select name="carro" :disabled="trem == ''" v-model="carro" id="carro">
-          <option disabled value="">Selecione</option>
-          <option v-for="carro in carros" :key="carro.id" :value="carro.nome">
-            {{ carro.nome }}
-          </option>
-        </select>
-      </div>
-      <div style="width: 300px">
-        <label for="descricao">Descricao da Falha</label>
-        <input type="text" name="descricao" id="descricao" />
-      </div>
-      <div style="width: 100px">
-        <label for="pt">P/T</label>
-         <select name="pt" id="pt">
-          <option disabled value="">Selecione</option>
-          <option value="true">P</option>
-          <option value="false">T</option>
-        </select>
-      </div>
-      <div style="width: 100px">
-        <label for="in">IN</label>
-        <select name="in" id="in">
-          <option disabled value="">Selecione</option>
-          <option value="true">Sim</option>
-          <option value="false">Não</option>
-        </select>
-      </div>
-      <div style="width: 150px">
-        <label for="local">Local</label>
-        <input type="text" name="local" id="local" />
-      </div>
-      <button id="btn-gerar-pedido">Gerar Pedido</button>
+      <div id="Botão">ATUALIZAR</div>
     </div>
   </main>
 </template>
@@ -58,22 +126,22 @@ export default {
     return {
       trem: "",
       trens: null,
-      carro:"",
-      carros:null
+      carro: "",
+      carros: null,
     };
   },
   methods: {
     async getTrens() {
-      const req = await fetch("http://192.168.15.21:3000/trens");
+      const req = await fetch("http://192.168.1.100:3000/trens");
       const data = await req.json();
       this.trens = data;
     },
-    MontarListaCarros(){
-      if(this.trens!== null){
-       let temp = this.trens.filter(c=> c.nome==this.trem);
-       this.carros = temp[0]["carros"];
+    MontarListaCarros() {
+      if (this.trens !== null) {
+        let temp = this.trens.filter((c) => c.nome == this.trem);
+        this.carros = temp[0]["carros"];
       }
-    }
+    },
   },
   mounted() {
     this.getTrens();
@@ -82,63 +150,53 @@ export default {
 </script>
 
 <style scoped>
-main {
-  height: 100vh;
-  background-color: #64fb61;
+td > select,
+input {
+  width: 100%;
 }
-
+#conteudo4 {
+  height: 100vh;
+  background-color: rgb(23, 206, 17);
+  grid-area: conteudo4;
+}
 table {
   border-collapse: collapse;
   width: 100%;
 }
-
-tr:first-child {
+thead {
   background-color: #c4c4c4;
 }
-
-tr:nth-child(2) {
-  background-color: #ffffff;
+tbody {
+  background-color: #fff;
 }
-select:disabled {
-  opacity: 1;
-  background-color: white;
+#tabelaC {
+  width: 70%;
+  margin-top: 5%;
 }
-
-#btn-gerar-pedido {
+#tabelaD {
+  width: 50%;
+  margin-top: 5%;
+}
+#Botão {
   border: 0px;
-  margin-left: 5%;
   width: 15%;
-  border-radius: 50%;
-  height: 100px;
+  border-radius: 80%;
+  height: 90px;
   background-color: #4784fb;
-  font-weight: bold;
-}
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(140%, -170%);
+  display: -webkit-flex;
 
-#btn-gerar-pedido:hover {
-  background-color: #b9891f;
-}
-#secao-superior {
-  width: 100%;
-  height: 50px;
-  margin-top: 15px;
+  display: -ms-flexbox;
   display: flex;
-}
 
-label {
-  font-weight: bold;
-  text-transform: uppercase;
-  display: inline-block;
-  height: 50%;
-  text-align: center;
-  width: 100%;
-  background-color: #c4c4c4;
-}
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 
-input,
-select {
-  width: 100%;
-  overflow: hidden;
-  text-align: center;
-  opacity: 1;
+  justify-content: center;
 }
 </style>

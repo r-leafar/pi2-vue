@@ -1,9 +1,9 @@
 <template>
-  <nav>
-    <div class="container">
-      <button id="btn-pedido">Pedidos</button>
-      <button id="btn-historico">Históricos</button>
-      <button id="btn-apontamento">Apontamento</button>
+  <nav class="container">
+    <div id="conteudo1"><div class="size-x pedidos">Pedidos</div></div>
+    <div id="conteudo2"><div class="size-x historicos">Históricos</div></div>
+    <div id="conteudo3">
+      <div class="size-x apontamentos">Apontamentos</div>
     </div>
   </nav>
 </template>
@@ -13,36 +13,81 @@ export default {
 };
 </script>
 <style scoped>
-.container > button {
-  width: 18%;
-  height: 100px;
-  border-radius: 50%;
-  border: 0px;
-  font-size: 36px;
-  color: white;
-  font-weight: bold;
-  margin-top: 3%;
-  margin-bottom: 3%;
+.container{
+    display :grid ;
+  
+    grid-template-columns: 1fr 1fr 1fr ;
+    grid-row: 2fr 1fr 1fr   ;
+    grid-template-areas: "titulo titulo titulo"
+                         "conteudo1 conteudo2 conteudo3" 
+                          "conteudo4 conteudo4 conteudo4";
+     position: relative; 
 }
-#btn-pedido {
-  background-color: #64fb61;
-}
-#btn-historico {
-  background-color: #f54aef;
-  margin-left: 5%;
-}
+.pedidos{
+    width: 200px; 
+    height: 150px;
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color:white;
+    background-color: rgb(23, 206, 17);
+    border-radius: 50%;
+    margin: 0 auto 0 auto;
+    margin-block: 20px;
 
-#btn-apontamento {
-  background-color: #fae318;
-  margin-left: 5%;
+    display: -webkit-flex;
+     display: -ms-flexbox;
+            display: flex;
+    -webkit-align-items: center;
+      -webkit-box-align: center;
+	 -ms-flex-align: center;
+	    align-items: center;
+  justify-content: center;
 }
-.container {
-  text-align: center;
+.historicos{
+    width: 200px; 
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color:white;
+    height: 150px;
+    background-color: rgb(240, 10, 201);
+    border-radius: 50%;
+    margin: 0 auto 0 auto;
+    margin-block: 20px;
+    display: -webkit-flex;
 
+     display: -ms-flexbox;
+            display: flex;
+
+    -webkit-align-items: center;
+      -webkit-box-align: center;
+	 -ms-flex-align: center;
+	    align-items: center;
+    
+  justify-content: center;
 }
-@media only screen and (max-width: 844px) {
-  .container > button {
+.apontamentos{
+    width: 200px; 
+    height: 150px;
     font-size: 20px;
-  }
+    text-transform: uppercase;
+    font-weight: bold;
+    color:white;
+    background-color: rgb(247, 243, 10);
+    border-radius: 50%;
+    margin: 0 auto 0 auto;
+    margin-block: 20px;
+    display: -webkit-flex;
+
+     display: -ms-flexbox;
+            display: flex;
+
+    -webkit-align-items: center;
+      -webkit-box-align: center;
+	 -ms-flex-align: center;
+	    align-items: center;
+    
+  justify-content: center;
 }
 </style>
