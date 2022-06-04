@@ -4,6 +4,10 @@
         {"id":2,"nome":"TREM B","carros":[{"id":3,"nome":"CARRO B1"},{"id":4,"nome":"CARRO B2"}] },
         {"id":3,"nome":"TREM C","carros":[{"id":5,"nome":"CARRO C1"},{"id":6,"nome":"CARRO C2"}] }
     
+    ],
+    "pedidos":[
+        {"idpedido":1,"trem":"TREM A","carro":"CARRO A2","descricao-falha":"Falha no radio","pt":"P","in":"sim","local":"Garagem","data":"2022-06-04","status":"Verificar"},
+        {"idpedido":2,"trem":"TREM B","carro":"CARRO B1","descricao-falha":"Falha no eletrica","pt":"T","in":"não","local":"Garagem","data":"2022-06-04","status":"Verificar"}
     ]
 
     
