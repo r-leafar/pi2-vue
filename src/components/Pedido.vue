@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     async getTrens() {
-      const req = await fetch("http://192.168.1.100:3000/trens");
+      const req = await fetch(`${process.env.VUE_APP_API_URL}trens`);
       const data = await req.json();
       this.trens = data;
     },
