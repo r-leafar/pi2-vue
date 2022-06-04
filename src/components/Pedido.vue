@@ -26,28 +26,15 @@
                   id="trem"
                 >
                   <option disabled value="">Selecione</option>
-                  <option
-                    v-for="trem in trens"
-                    :key="trem.id"
-                    :value="trem.nome"
-                  >
+                  <option v-for="trem in trens" :key="trem.id" :value="trem.nome">
                     {{ trem.nome }}
                   </option>
                 </select>
               </td>
               <td>
-                <select
-                  name="carro"
-                  :disabled="trem == ''"
-                  v-model="carro"
-                  id="carro"
-                >
+                <select name="carro" :disabled="trem == ''" v-model="carro" id="carro">
                   <option disabled value="">Selecione</option>
-                  <option
-                    v-for="carro in carros"
-                    :key="carro.id"
-                    :value="carro.nome"
-                  >
+                  <option v-for="carro in carros" :key="carro.id" :value="carro.nome">
                     {{ carro.nome }}
                   </option>
                 </select>
@@ -100,6 +87,7 @@
             </tr>
           </tbody>
         </table>
+
         <div>
           <table id="tabelaD">
             <thead>
@@ -114,8 +102,8 @@
             </tbody>
           </table>
         </div>
+        <button id="btn-pedido">Atualizar</button>
       </div>
-      <div id="Botão">ATUALIZAR</div>
     </div>
   </main>
 </template>
@@ -177,21 +165,22 @@ tbody {
   width: 50%;
   margin-top: 5%;
 }
-#Botão {
+#btn-pedido {
+  text-shadow: 1px 1px 2px black;
+  font-family: sans;
   border: 0px;
   width: 15%;
   border-radius: 80%;
   height: 90px;
+  color: #fff;
   background-color: #4784fb;
-  position: absolute;
-  top: 70%;
+  position: relative;
   left: 50%;
   transform: translate(140%, -170%);
   display: -webkit-flex;
-
   display: -ms-flexbox;
   display: flex;
-
+  text-transform: uppercase;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
