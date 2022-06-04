@@ -70,40 +70,21 @@
         <table id="tabelaC">
           <thead>
             <tr>
+              <th>PEDIDO</th>
+              <th>TREM</th>
               <th>CARRO</th>
-              <th>EQUIPAMENTO</th>
-              <th>DEFEITO</th>
-              <th>REPARO</th>
+              <th>DESCRICAO</th>
+              <th>P/T</th>
+              <th>IN</th>
+              <th>LOCAL</th>
               <th>DATA</th>
+              <th>STATUS</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>ssgsgsgs</td>
-              <td>sgsgsgsg</td>
-              <td>sgsgsgsgs</td>
-              <td>sgsgsgsgs</td>
-              <td>sgsgsgsgsg</td>
-            </tr>
-          </tbody>
+          <tbody></tbody>
         </table>
-
-        <div>
-          <table id="tabelaD">
-            <thead>
-              <tr>
-                <th>OBSERVAÇÃO</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ADADAAD</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <button id="btn-pedido">Atualizar</button>
       </div>
+      <button id="btn-pedido">Atualizar</button>
     </div>
   </main>
 </template>
@@ -124,6 +105,45 @@ export default {
       const data = await req.json();
       this.trens = data;
     },
+    async getPedidos() {
+      const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`);
+      const data = await req.json();
+      let table = document.getElementById("tabelaC").getElementsByTagName("tbody")[0];
+
+      data.forEach((element, index) => {
+        let row = table.insertRow(0);
+        for (const key in element) {
+          let cell_tmp = row.insertCell(-1);
+          cell_tmp.innerHTML = element[key];
+        }
+      });
+      /*
+      Object.keys(data).forEach(function(key) {
+        console.log(key);
+
+      });*/
+      /*
+      
+  
+      let cell1 = row.insertCell(0);
+      let cell2 = row.insertCell(0);
+      let cell3 = row.insertCell(0);
+      let cell4 = row.insertCell(0);
+      let cell5 = row.insertCell(0);
+      let cell6 = row.insertCell(0);
+      let cell7 = row.insertCell(0);
+      let cell8 = row.insertCell(0);
+      let cell9 = row.insertCell(0);
+      cell1.innerHTML = "NEW CELL1";
+      cell2.innerHTML = "NEW CELL2";
+      cell3.innerHTML = "NEW CELL3";
+      cell4.innerHTML = "NEW CELL4";
+      cell5.innerHTML = "NEW CELL5";
+      cell6.innerHTML = "NEW CELL6";
+      cell7.innerHTML = "NEW CELL7";
+      cell8.innerHTML = "NEW CELL8";
+      cell9.innerHTML = "NEW CELL9";*/
+    },
     MontarListaCarros() {
       if (this.trens !== null) {
         let temp = this.trens.filter((c) => c.nome == this.trem);
@@ -133,6 +153,7 @@ export default {
   },
   mounted() {
     this.getTrens();
+    this.getPedidos();
   },
 };
 </script>
@@ -166,6 +187,7 @@ tbody {
   margin-top: 5%;
 }
 #btn-pedido {
+  margin-top: 5%;
   font-size: 25px;
   text-shadow: 1px 1px 2px black;
   font-family: sans;
@@ -175,7 +197,7 @@ tbody {
   height: 90px;
   color: #fff;
   background-color: #4784fb;
-  position: relative;
+  position: absolute;
   left: 50%;
   transform: translate(140%, -170%);
   display: -webkit-flex;
@@ -189,10 +211,10 @@ tbody {
 
   justify-content: center;
 }
-@media only screen and (max-width: 890px) {
-#btn-pedido {
-font-size: 20px;
-}
-
+@media only screen and (max-width: 900px) {
+  #btn-pedido {
+    font-size: 18px;
+    margin-top: 16%;
+  }
 }
 </style>
