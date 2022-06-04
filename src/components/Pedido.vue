@@ -166,6 +166,7 @@ tbody {
   margin-top: 5%;
 }
 #btn-pedido {
+  font-size: 25px;
   text-shadow: 1px 1px 2px black;
   font-family: sans;
   border: 0px;
@@ -187,5 +188,11 @@ tbody {
   align-items: center;
 
   justify-content: center;
+}
+@media only screen and (max-width: 890px) {
+#btn-pedido {
+font-size: 20px;
+}
+
 }
 </style>
