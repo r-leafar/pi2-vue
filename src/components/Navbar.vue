@@ -17,7 +17,6 @@ export default {
         font-weight: bold;
         color: white;
         font-family: sans;
-        color: white;
         -webkit-text-stroke: 0.2mm black;
     }
 </style>
