@@ -26,7 +26,7 @@
                   id="trem"
                 >
                   <option disabled value="">Selecione</option>
-                  <option v-for="trem in trens" :key="trem.id" :value="trem.nome">
+                  <option v-for="trem in trens" :key="trem.id" :value="trem.id">
                     {{ trem.nome }}
                   </option>
                 </select>
@@ -34,32 +34,44 @@
               <td>
                 <select name="carro" :disabled="trem == ''" v-model="carro" id="carro">
                   <option disabled value="">Selecione</option>
-                  <option v-for="carro in carros" :key="carro.id" :value="carro.nome">
+                  <option v-for="carro in carros" :key="carro.id" :value="carro.id">
                     {{ carro.nome }}
                   </option>
                 </select>
               </td>
-              <td><input type="text" name="descricao" id="descricao" /></td>
               <td>
-                <select name="pt" id="pt">
+                <input
+                  type="text"
+                  name="descricao_falha"
+                  id="descricao_falha"
+                  v-model="descricao_falha"
+                />
+              </td>
+              <td>
+                <select name="pt" id="pt" v-model="pt">
                   <option disabled value="">Selecione</option>
                   <option value="true">P</option>
                   <option value="false">T</option>
                 </select>
               </td>
               <td>
-                <select name="in" id="in">
+                <select name="in" id="in" v-model="in">
                   <option disabled value="">Selecione</option>
                   <option value="true">Sim</option>
                   <option value="false">Não</option>
                 </select>
               </td>
-              <td><input type="text" name="local" id="local" /></td>
+              <td><input type="text" name="local" id="local" v-model="local" /></td>
               <td>
-                <select name="status" id="status">
+                <select name="status" id="status" v-model="status">
                   <option disabled value="">Selecione</option>
-                  <option value="true">Analise</option>
-                  <option value="false">Finalizado</option>
+                  <option
+                    v-for="status in status_list"
+                    :key="status.idstatus"
+                    :value="status.idstatus"
+                  >
+                    {{ status.descricao }}
+                  </option>
                 </select>
               </td>
             </tr>
@@ -84,7 +96,7 @@
           <tbody></tbody>
         </table>
       </div>
-      <button id="btn-pedido">Atualizar</button>
+      <button id="btn-pedido" v-on:click="createPedido">Atualizar</button>
     </div>
   </main>
 </template>
@@ -93,17 +105,43 @@ export default {
   name: "Pedido",
   data() {
     return {
-      trem: "",
       trens: null,
-      carro: "",
       carros: null,
+      status_list: null,
+      trem: null,
+      carro: null,
+      descricao_falha: null,
+      pt: null,
+      in: null,
+      local: null,
+      status,
     };
   },
   methods: {
+    async createPedido(e) {
+      e.preventDefault();
+
+      const data = {
+        trem: this.trem,
+        carro: this.carro,
+        descricao_falha: this.descricao_falha,
+        pt: this.pt,
+        in: this.in,
+        local: this.local,
+        status: this.status,
+      };
+
+      console.log(data);
+    },
     async getTrens() {
       const req = await fetch(`${process.env.VUE_APP_API_URL}trens`);
       const data = await req.json();
       this.trens = data;
+    },
+    async getStatus() {
+      const req = await fetch(`${process.env.VUE_APP_API_URL}status`);
+      const data = await req.json();
+      this.status_list = data;
     },
     async getPedidos() {
       const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`);
@@ -117,36 +155,10 @@ export default {
           cell_tmp.innerHTML = element[key];
         }
       });
-      /*
-      Object.keys(data).forEach(function(key) {
-        console.log(key);
-
-      });*/
-      /*
-      
-  
-      let cell1 = row.insertCell(0);
-      let cell2 = row.insertCell(0);
-      let cell3 = row.insertCell(0);
-      let cell4 = row.insertCell(0);
-      let cell5 = row.insertCell(0);
-      let cell6 = row.insertCell(0);
-      let cell7 = row.insertCell(0);
-      let cell8 = row.insertCell(0);
-      let cell9 = row.insertCell(0);
-      cell1.innerHTML = "NEW CELL1";
-      cell2.innerHTML = "NEW CELL2";
-      cell3.innerHTML = "NEW CELL3";
-      cell4.innerHTML = "NEW CELL4";
-      cell5.innerHTML = "NEW CELL5";
-      cell6.innerHTML = "NEW CELL6";
-      cell7.innerHTML = "NEW CELL7";
-      cell8.innerHTML = "NEW CELL8";
-      cell9.innerHTML = "NEW CELL9";*/
     },
     MontarListaCarros() {
       if (this.trens !== null) {
-        let temp = this.trens.filter((c) => c.nome == this.trem);
+        let temp = this.trens.filter((c) => c.id == this.trem);
         this.carros = temp[0]["carros"];
       }
     },
@@ -154,6 +166,7 @@ export default {
   mounted() {
     this.getTrens();
     this.getPedidos();
+    this.getStatus();
   },
 };
 </script>
@@ -180,10 +193,6 @@ tbody {
 }
 #tabelaC {
   width: 70%;
-  margin-top: 5%;
-}
-#tabelaD {
-  width: 50%;
   margin-top: 5%;
 }
 #btn-pedido {
