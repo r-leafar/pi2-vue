@@ -1,17 +1,80 @@
 {
-    "trens": [ 
-        {"id":1,"nome":"TREM A","carros":[{"id":1,"nome":"CARRO A1"},{"id":2,"nome":"CARRO A2"}] },
-        {"id":2,"nome":"TREM B","carros":[{"id":3,"nome":"CARRO B1"},{"id":4,"nome":"CARRO B2"}] },
-        {"id":3,"nome":"TREM C","carros":[{"id":5,"nome":"CARRO C1"},{"id":6,"nome":"CARRO C2"}] }
-    
-    ],
-    "status":[
-        {"idstatus":1,"descricao":"ABERTO"},{"idstatus":2,"descricao":"ATENDIMENTO"}
-    ],
-    "pedidos":[
-        {"idpedido":1,"trem":"TREM A","carro":"CARRO A2","descricao_falha":"Falha no radio","pt":"P","in":"sim","local":"Garagem","data":"2022-06-04","status":"Verificar"},
-        {"idpedido":2,"trem":"TREM B","carro":"CARRO B1","descricao_falha":"Falha no eletrica","pt":"T","in":"não","local":"Garagem","data":"2022-06-04","status":"Verificar"}
-    ]
-
-    
+  "trens": [
+    {
+      "id": 1,
+      "nome": "TREM A",
+      "carros": [
+        {
+          "id": 1,
+          "nome": "CARRO A1"
+        },
+        {
+          "id": 2,
+          "nome": "CARRO A2"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "TREM B",
+      "carros": [
+        {
+          "id": 3,
+          "nome": "CARRO B1"
+        },
+        {
+          "id": 4,
+          "nome": "CARRO B2"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "TREM C",
+      "carros": [
+        {
+          "id": 5,
+          "nome": "CARRO C1"
+        },
+        {
+          "id": 6,
+          "nome": "CARRO C2"
+        }
+      ]
+    }
+  ],
+  "status": [
+    {
+      "idstatus": 1,
+      "descricao": "ABERTO"
+    },
+    {
+      "idstatus": 2,
+      "descricao": "ATENDIMENTO"
+    }
+  ],
+  "pedidos": [
+    {
+      "id": 1,
+      "trem": "TREM A",
+      "carro": "CARRO A2",
+      "descricao_falha": "Falha no radio",
+      "pt": "P",
+      "in": "sim",
+      "local": "Garagem",
+      "data": "2022-06-04",
+      "status": "Verificar"
+    },
+    {
+      "id": 2,
+      "trem": "TREM B",
+      "carro": "CARRO B1",
+      "descricao_falha": "Falha no eletrica",
+      "pt": "T",
+      "in": "não",
+      "local": "Garagem",
+      "data": "2022-06-04",
+      "status": "Verificar"
+    }
+  ]
 }

@@ -119,8 +119,6 @@ export default {
   },
   methods: {
     async createPedido(e) {
-      e.preventDefault();
-
       const data = {
         trem: this.trem,
         carro: this.carro,
@@ -131,7 +129,36 @@ export default {
         status: this.status,
       };
 
-      console.log(data);
+      let validform = true;
+      for (const key in data) {
+        if (data[key] == null || data[key] == "") {
+          validform = false;
+          alert("Preencha todos os campos");
+          break;
+        }
+      }
+
+      if (validform) {
+        const dataJson = JSON.stringify(data);
+
+        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: dataJson,
+        });
+        const res = await req.json();
+        /*Renove todas as linhas da tabelaa*/ 
+        let tbody = document
+          .getElementById("tabelaC")
+          .getElementsByTagName("tbody")[0]
+          .querySelectorAll("tr");
+
+        Array.prototype.forEach.call(tbody, function (node) {
+          node.parentNode.removeChild(node);
+        });
+        /*Fim da funcao*/
+        this.getPedidos();
+      }
     },
     async getTrens() {
       const req = await fetch(`${process.env.VUE_APP_API_URL}trens`);
