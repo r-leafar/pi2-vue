@@ -5,10 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build --mode production",
-    "backend":"json-server --host 0.0.0.0 --host 127.0.0.1 --watch db/db.json"
+    "backend": "json-server --host 0.0.0.0 --host 127.0.0.1 --watch db/db.json"
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.3",
     "json-server": "^0.17.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
