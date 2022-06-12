@@ -16,8 +16,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>###</td>
+            <tr >
+              <td><input name="idpedido" id="idpedido" type="text" v-model="id" disabled/></td>
               <td>
                 <select
                   v-on:change="MontarListaCarros"
@@ -26,7 +26,7 @@
                   id="trem"
                 >
                   <option disabled value="">Selecione</option>
-                  <option v-for="trem in trens" :key="trem.id" :value="trem.id">
+                  <option v-for="trem in trens" :key="trem.id" :value="trem.nome">
                     {{ trem.nome }}
                   </option>
                 </select>
@@ -34,7 +34,7 @@
               <td>
                 <select name="carro" :disabled="trem == ''" v-model="carro" id="carro">
                   <option disabled value="">Selecione</option>
-                  <option v-for="carro in carros" :key="carro.id" :value="carro.id">
+                  <option v-for="carro in carros" :key="carro.id" :value="carro.nome">
                     {{ carro.nome }}
                   </option>
                 </select>
@@ -68,7 +68,7 @@
                   <option
                     v-for="status in status_list"
                     :key="status.idstatus"
-                    :value="status.idstatus"
+                    :value="status.descricao"
                   >
                     {{ status.descricao }}
                   </option>
@@ -93,7 +93,21 @@
               <th>STATUS</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr v-for="p in lista_pedidos">
+              <td>{{ p.id }}</td>
+              <td>{{ p.trem }}</td>
+              <td>{{ p.carro }}</td>
+              <td>{{ p.descricao_falha }}</td>
+              <td>{{ p.pt }}</td>
+              <td>{{ p.in }}</td>
+              <td>{{ p.local }}</td>
+              <td>{{ p.data }}</td>
+              <td>
+                <button v-on:click="alterarPedido(p.id)">Alterar</button>{{ p.status }}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <button id="btn-pedido" v-on:click="createPedido">Atualizar</button>
@@ -101,6 +115,7 @@
   </main>
 </template>
 <script>
+const dayjs = require("dayjs");
 export default {
   name: "Pedido",
   data() {
@@ -114,10 +129,43 @@ export default {
       pt: null,
       in: null,
       local: null,
-      status,
+      status: null,
+      lista_pedidos: null,
+      id:null
     };
   },
   methods: {
+   async alterarPedido(idpedido) {
+        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/`+idpedido, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" }
+        });
+        const res = await req.json();
+        this.id = res.id;
+        this.trem = res.trem;
+        this.MontarListaCarros();
+        this.carro = res.carro;
+        this.descricao_falha = res.descricao_falha;
+        this.pt = res.pt;
+        this.in = res.in;
+        this.local=res.local;
+        this.status = res.status;
+
+        
+
+    },
+    clearForm() {
+      this.trens = null;
+      this.carros = null;
+      this.status_list = null;
+      this.trem = null;
+      this.carro = null;
+      this.descricao_falha = null;
+      this.pt = null;
+      this.in = null;
+      this.local = null;
+      this.status = null;
+    },
     async createPedido(e) {
       const data = {
         trem: this.trem,
@@ -126,6 +174,7 @@ export default {
         pt: this.pt,
         in: this.in,
         local: this.local,
+        data: dayjs().format("YYYY-MM-DD"),
         status: this.status,
       };
 
@@ -147,7 +196,8 @@ export default {
           body: dataJson,
         });
         const res = await req.json();
-        /*Renove todas as linhas da tabelaa*/ 
+        /*
+        //Renove todas as linhas da tabelaa
         let tbody = document
           .getElementById("tabelaC")
           .getElementsByTagName("tbody")[0]
@@ -155,9 +205,10 @@ export default {
 
         Array.prototype.forEach.call(tbody, function (node) {
           node.parentNode.removeChild(node);
-        });
+        });*/
         /*Fim da funcao*/
         this.getPedidos();
+        this.clearForm();
       }
     },
     async getTrens() {
@@ -173,19 +224,26 @@ export default {
     async getPedidos() {
       const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`);
       const data = await req.json();
+      this.lista_pedidos = data;
+      /*
       let table = document.getElementById("tabelaC").getElementsByTagName("tbody")[0];
-
+      let i = 0;
       data.forEach((element, index) => {
         let row = table.insertRow(0);
+
         for (const key in element) {
           let cell_tmp = row.insertCell(-1);
-          cell_tmp.innerHTML = element[key];
+          if (key === "status") {
+            cell_tmp.innerHTML = element[key];
+          } else {
+            cell_tmp.innerHTML = element[key];
+          }
         }
-      });
+      });*/
     },
     MontarListaCarros() {
       if (this.trens !== null) {
-        let temp = this.trens.filter((c) => c.id == this.trem);
+        let temp = this.trens.filter((c) => c.nome == this.trem);
         this.carros = temp[0]["carros"];
       }
     },
