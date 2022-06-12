@@ -59,22 +59,33 @@
       "trem": "TREM A",
       "carro": "CARRO A2",
       "descricao_falha": "Falha no radio",
-      "pt": "P",
-      "in": "sim",
+      "pt": "true",
+      "in": "false",
       "local": "Garagem",
       "data": "2022-06-04",
-      "status": "Verificar"
+      "status": "ABERTO"
     },
     {
       "id": 2,
       "trem": "TREM B",
       "carro": "CARRO B1",
       "descricao_falha": "Falha no eletrica",
-      "pt": "T",
-      "in": "não",
+      "pt": "true",
+      "in": "false",
       "local": "Garagem",
       "data": "2022-06-04",
-      "status": "Verificar"
+      "status": "ABERTO"
+    },
+    {
+      "trem": "TREM B",
+      "carro": "CARRO B1",
+      "descricao_falha": "dfdffdf",
+      "pt": "true",
+      "in": "true",
+      "local": "dfdfdfdf",
+      "data": "2022-06-12",
+      "status": "ATENDIMENTO",
+      "id": 3
     }
   ]
 }
