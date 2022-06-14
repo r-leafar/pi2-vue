@@ -1,6 +1,6 @@
 <template>
   <nav class="container">
-    <div id="conteudo1"><div class="pedidos">Pedidos</div></div>
+    <div id="conteudo1" v-on:click="$emit('LimparFormPedido')"><div class="pedidos">Pedidos</div></div>
     <div id="conteudo2"><div class="historicos">Históricos</div></div>
     <div id="conteudo3">
       <div class="apontamentos">Apontamentos</div>
@@ -10,6 +10,8 @@
 <script>
 export default {
   name: "Menu",
+  emits:["limparFormPedido"]
+   
 };
 </script>
 <style scoped>
