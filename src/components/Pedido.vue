@@ -1,4 +1,5 @@
 <template>
+  <Menu @limpar-form-pedido="clearForm" />
   <main>
     <div id="conteudo4">
       <div>
@@ -104,7 +105,7 @@
               <td>{{ p.local }}</td>
               <td>{{ p.data }}</td>
               <td>
-                <button v-on:click="alterarPedido(p.id)">Alterar</button>{{ p.status }}
+                <button v-on:click="carregarPedido(p.id)">Alterar</button>{{ p.status }}
               </td>
             </tr>
           </tbody>
@@ -115,9 +116,11 @@
   </main>
 </template>
 <script>
+import Menu from "../components/Menu.vue";
 const dayjs = require("dayjs");
 export default {
   name: "Pedido",
+  components:{Menu},
   data() {
     return {
       trens: null,
@@ -135,7 +138,7 @@ export default {
     };
   },
   methods: {
-   async alterarPedido(idpedido) {
+   async carregarPedido(idpedido) {
         const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/`+idpedido, {
           method: "GET",
           headers: { "Content-Type": "application/json" }
@@ -155,6 +158,7 @@ export default {
 
     },
     clearForm() {
+      this.id = null;
       this.trens = null;
       this.carros = null;
       this.status_list = null;
@@ -165,6 +169,9 @@ export default {
       this.in = null;
       this.local = null;
       this.status = null;
+      this.getTrens();
+      this.MontarListaCarros();
+      this.getStatus();
     },
     async createPedido(e) {
       const data = {
@@ -186,7 +193,7 @@ export default {
           break;
         }
       }
-
+      
       if (validform) {
         const dataJson = JSON.stringify(data);
 
@@ -196,17 +203,7 @@ export default {
           body: dataJson,
         });
         const res = await req.json();
-        /*
-        //Renove todas as linhas da tabelaa
-        let tbody = document
-          .getElementById("tabelaC")
-          .getElementsByTagName("tbody")[0]
-          .querySelectorAll("tr");
-
-        Array.prototype.forEach.call(tbody, function (node) {
-          node.parentNode.removeChild(node);
-        });*/
-        /*Fim da funcao*/
+       
         this.getPedidos();
         this.clearForm();
       }
