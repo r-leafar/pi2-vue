@@ -13,12 +13,15 @@
               <th>P/T</th>
               <th>IN</th>
               <th>LOCAL</th>
+              <th>DATA CRIAÇÃO</th>
               <th>STATUS</th>
             </tr>
           </thead>
           <tbody>
-            <tr >
-              <td><input name="idpedido" id="idpedido" type="text" v-model="id" disabled/></td>
+            <tr>
+              <td>
+                <input name="idpedido" id="idpedido" type="text" v-model="id" disabled />
+              </td>
               <td>
                 <select
                   v-on:change="MontarListaCarros"
@@ -63,6 +66,7 @@
                 </select>
               </td>
               <td><input type="text" name="local" id="local" v-model="local" /></td>
+              <td><input type="text" name="data" id="data" v-model="data" disabled /></td>
               <td>
                 <select name="status" id="status" v-model="status">
                   <option disabled value="">Selecione</option>
@@ -104,8 +108,14 @@
               <td>{{ p.in }}</td>
               <td>{{ p.local }}</td>
               <td>{{ p.data }}</td>
-              <td>
-                <button v-on:click="carregarPedido(p.id)">Alterar</button>{{ p.status }}
+              <td style="text-align: center">
+                <button style="float: left" v-on:click="carregarPedido(p.id)">
+                  Alterar
+                </button>
+                {{ p.status }}
+                <button style="float: right" v-on:click="excluirPedido(p.id)">
+                  [ X ]
+                </button>
               </td>
             </tr>
           </tbody>
@@ -120,12 +130,13 @@ import Menu from "../components/Menu.vue";
 const dayjs = require("dayjs");
 export default {
   name: "Pedido",
-  components:{Menu},
+  components: { Menu },
   data() {
     return {
       trens: null,
       carros: null,
       status_list: null,
+      data: null,
       trem: null,
       carro: null,
       descricao_falha: null,
@@ -134,28 +145,37 @@ export default {
       local: null,
       status: null,
       lista_pedidos: null,
-      id:null
+      id: null,
     };
   },
   methods: {
-   async carregarPedido(idpedido) {
-        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/`+idpedido, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" }
+    async excluirPedido(idpedido) {
+      let escolha = confirm("Você tem certeza que deseja excluir esse pedido?");
+      if (escolha === true) {
+        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/${idpedido}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
         });
-        const res = await req.json();
-        this.id = res.id;
-        this.trem = res.trem;
-        this.MontarListaCarros();
-        this.carro = res.carro;
-        this.descricao_falha = res.descricao_falha;
-        this.pt = res.pt;
-        this.in = res.in;
-        this.local=res.local;
-        this.status = res.status;
-
-        
-
+        this.getPedidos();
+        this.clearForm();
+      }
+    },
+    async carregarPedido(idpedido) {
+      const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/${idpedido}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const res = await req.json();
+      this.id = res.id;
+      this.trem = res.trem;
+      this.MontarListaCarros();
+      this.carro = res.carro;
+      this.descricao_falha = res.descricao_falha;
+      this.pt = res.pt;
+      this.in = res.in;
+      this.local = res.local;
+      this.data = res.data;
+      this.status = res.status;
     },
     clearForm() {
       this.id = null;
@@ -167,11 +187,36 @@ export default {
       this.descricao_falha = null;
       this.pt = null;
       this.in = null;
+      this.data = null;
       this.local = null;
       this.status = null;
       this.getTrens();
       this.MontarListaCarros();
       this.getStatus();
+    },
+    async changePedido(e) {
+      const data = {
+        trem: this.trem,
+        carro: this.carro,
+        descricao_falha: this.descricao_falha,
+        pt: this.pt,
+        in: this.in,
+        local: this.local,
+        data: this.data,
+        status: this.status,
+      };
+
+      const dataJson = JSON.stringify(data);
+
+      const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/${this.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: dataJson,
+      });
+      const res = await req.json();
+
+      this.getPedidos();
+      this.clearForm();
     },
     async createPedido(e) {
       const data = {
@@ -193,19 +238,26 @@ export default {
           break;
         }
       }
-      
+      //valida se todos os campos estão preenchidos do formulário
       if (validform) {
-        const dataJson = JSON.stringify(data);
+        //verifixa se o id for diferente de null então é para alterar ao invés de criar um novo
+        if (this.id !== null) {
+          //alterar pedido
+          this.changePedido();
+        } else {
+          //criar pedido novo
+          const dataJson = JSON.stringify(data);
 
-        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: dataJson,
-        });
-        const res = await req.json();
-       
-        this.getPedidos();
-        this.clearForm();
+          const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: dataJson,
+          });
+          const res = await req.json();
+
+          this.getPedidos();
+          this.clearForm();
+        }
       }
     },
     async getTrens() {
@@ -222,21 +274,6 @@ export default {
       const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`);
       const data = await req.json();
       this.lista_pedidos = data;
-      /*
-      let table = document.getElementById("tabelaC").getElementsByTagName("tbody")[0];
-      let i = 0;
-      data.forEach((element, index) => {
-        let row = table.insertRow(0);
-
-        for (const key in element) {
-          let cell_tmp = row.insertCell(-1);
-          if (key === "status") {
-            cell_tmp.innerHTML = element[key];
-          } else {
-            cell_tmp.innerHTML = element[key];
-          }
-        }
-      });*/
     },
     MontarListaCarros() {
       if (this.trens !== null) {
