@@ -1,8 +1,8 @@
 <template>
   <nav class="container">
-    <div id="conteudo1" v-on:click="$emit('LimparFormPedido')"><div class="pedidos">Pedidos</div></div>
-    <div id="conteudo2"><div class="historicos">Históricos</div></div>
-    <div id="conteudo3">
+    <div id="conteudo1" v-on:click="$emit('LimparFormPedido');this.$router.push('/pedido')"><div class="pedidos">Pedidos</div></div>
+    <div id="conteudo2" v-on:click="this.$router.push('/historico')"><div class="historicos">Históricos</div></div>
+    <div id="conteudo3" v-on:click="this.$router.push('/apontamento')">
       <div class="apontamentos">Apontamentos</div>
     </div>
   </nav>
