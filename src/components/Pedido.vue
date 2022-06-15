@@ -232,7 +232,9 @@ export default {
 
       let validform = true;
       for (const key in data) {
+
         if (data[key] == null || data[key] == "") {
+          
           validform = false;
           alert("Preencha todos os campos");
           break;
@@ -279,6 +281,7 @@ export default {
       if (this.trens !== null) {
         let temp = this.trens.filter((c) => c.nome == this.trem);
         this.carros = temp[0]["carros"];
+        this.carro = null;
       }
     },
   },
