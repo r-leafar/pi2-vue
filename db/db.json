@@ -63,6 +63,10 @@
     {
       "idstatus": 2,
       "descricao": "ATENDIMENTO"
+    },
+    {
+      "idstatus": 3,
+      "descricao": "FINALIZADO"
     }
   ],
   "pedidos": [
@@ -70,33 +74,51 @@
       "trem": "TREM B",
       "carro": "CARRO B2",
       "descricao_falha": "Falha no eletrica",
+      "observacao":[""],
+      "reparo":"",
       "pt": "false",
       "in": "false",
       "local": "Garagem",
       "data": "2022-06-04",
-      "status": "ATENDIMENTO",
+      "status": "FINALIZADO",
+      "usuario": {
+        "id": 1,
+        "nome": "SAULO"
+      },
       "id": 1
     },
     {
       "trem": "TREM B",
       "carro": "CARRO B2",
       "descricao_falha": "Falha acesso",
+      "observacao":[""],
+      "reparo":"",
       "pt": "true",
       "in": "true",
       "local": "Patio vila maria",
       "data": "2022-06-12",
       "status": "ATENDIMENTO",
+      "usuario": {
+        "id": 1,
+        "nome": "SAULO"
+      },
       "id": 2
     },
     {
       "trem": "TREM B",
       "carro": "CARRO B1",
       "descricao_falha": "Falha muito dificil",
+      "observacao":["Feito esquema 1","UHUUUUU"],
+      "reparo":"",
       "pt": "true",
       "in": "true",
       "local": "Patio pinheiros",
       "data": "2022-06-14",
       "status": "ABERTO",
+      "usuario": {
+        "id": 1,
+        "nome": "SAULO"
+      },
       "id": 3
     }
   ],
