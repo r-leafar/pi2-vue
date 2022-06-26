@@ -15,6 +15,7 @@
                 name="trip-start"
                 min="2000-01-01"
                 max="2023-01-01"
+                v-model="data_inicial"
               />
             </div>
           </div>
@@ -31,6 +32,7 @@
                 name="trip-start"
                 min="2000-01-01"
                 max="2023-01-01"
+                v-model="data_final"
               />
             </div>
           </div>
@@ -69,12 +71,14 @@
                 </option>
               </select>
             </div>
-            <div class="rTableCell">Lorem ipsum</div>
+            <div class="rTableCell">
+              <input type="text" id="sistema" v-model="sistema" />
+            </div>
           </div>
         </div>
       </div>
       <div id="secao1_3">
-        <button id="btn-historico-buscar" v-on:click="">Buscar</button>
+        <button id="btn-historico-buscar" v-on:click="buscarHistorico">Buscar</button>
       </div>
     </div>
 
@@ -84,24 +88,29 @@
         style="width: 100%; margin-top: 15px; padding-left: 0px; padding-top: 3%"
       >
         <div class="rTableRow">
+          <div class="rTableHead">Id</div>
           <div class="rTableHead">Usuario</div>
           <div class="rTableHead">Trem</div>
           <div class="rTableHead">Carro</div>
-          <div class="rTableHead">Equipamento</div>
           <div class="rTableHead">Defeito</div>
           <div class="rTableHead">Reparo</div>
           <div class="rTableHead">Data</div>
           <div class="rTableHead">Observação</div>
         </div>
-        <div class="rTableRow">
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
+        <div class="rTableRow" v-for="pedido in lista_pedidos">
+          <div class="rTableCell">{{ pedido.id }}</div>
+          <div class="rTableCell">{{ pedido.usuario.nome }}</div>
+          <div class="rTableCell">{{ pedido.trem }}</div>
+          <div class="rTableCell">{{ pedido.carro }}</div>
+          <div class="rTableCell">{{ pedido.descricao_falha }}</div>
+          <div class="rTableCell">{{ pedido.reparo }}</div>
+          <div class="rTableCell">{{ pedido.data }}</div>
+          <div class="rTableCell">
+            {{ pedido.observacao.pop() }}
+            <button style="float: right" v-on:click="carregarApontamento(pedido.id)">
+              ###
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -120,8 +129,12 @@ export default {
       frotas: null,
       frota: null,
       trens: null,
-      trens_filtro:null,
+      trens_filtro: null,
       trem: null,
+      data_inicial: null,
+      data_final: null,
+      sistema: null,
+      lista_pedidos: null,
     };
   },
   methods: {
@@ -137,15 +150,38 @@ export default {
     },
     async MontarListaTrem() {
       if (this.frotas !== null && this.trens !== null) {
-        let filtro=[];
-        for(var t of this.trens){
-          if(t.frota.nome === this.frota){
-          filtro.push({"id":t.id,"nome":t.nome})
+        let filtro = [];
+        for (var t of this.trens) {
+          if (t.frota.nome === this.frota) {
+            filtro.push({ id: t.id, nome: t.nome });
           }
         }
         this.trens_filtro = filtro;
-        this.trem=null;
-
+        this.trem = null;
+      }
+    },
+    async carregarApontamento(idpedido) {
+      this.$router.push({ name: "apontamento"});
+    },
+    async buscarHistorico() {
+      const data = {
+        dtinicial: this.data_inicial,
+        dtfinal: this.data_final,
+        trem: this.trem,
+        descricao_falha: this.sistema,
+      };
+      let validform = true; /*
+      for (const key in data) {
+        if (data[key] == null || data[key] == "") {
+          validform = false;
+          alert("Preencha todos os campos");
+          break;
+        }
+      }*/
+      if (validform) {
+        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`);
+        const data = await req.json();
+        this.lista_pedidos = data;
       }
     },
   },
