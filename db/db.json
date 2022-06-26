@@ -2,6 +2,10 @@
   "trens": [
     {
       "id": 1,
+      "frota": {
+        "id": 1,
+        "nome": "P"
+      },
       "nome": "TREM A",
       "carros": [
         {
@@ -17,6 +21,10 @@
     {
       "id": 2,
       "nome": "TREM B",
+      "frota": {
+        "id": 1,
+        "nome": "P"
+      },
       "carros": [
         {
           "id": 3,
@@ -30,6 +38,10 @@
     },
     {
       "id": 3,
+      "frota": {
+        "id": 2,
+        "nome": "Q"
+      },
       "nome": "TREM C",
       "carros": [
         {
@@ -55,37 +67,47 @@
   ],
   "pedidos": [
     {
-      "id": 1,
-      "trem": "TREM A",
-      "carro": "CARRO A2",
-      "descricao_falha": "Falha no radio",
-      "pt": "true",
+      "trem": "TREM B",
+      "carro": "CARRO B2",
+      "descricao_falha": "Falha no eletrica",
+      "pt": "false",
       "in": "false",
       "local": "Garagem",
       "data": "2022-06-04",
-      "status": "ABERTO"
+      "status": "ATENDIMENTO",
+      "id": 1
+    },
+    {
+      "trem": "TREM B",
+      "carro": "CARRO B2",
+      "descricao_falha": "Falha acesso",
+      "pt": "true",
+      "in": "true",
+      "local": "Patio vila maria",
+      "data": "2022-06-12",
+      "status": "ATENDIMENTO",
+      "id": 2
+    },
+    {
+      "trem": "TREM B",
+      "carro": "CARRO B1",
+      "descricao_falha": "Falha muito dificil",
+      "pt": "true",
+      "in": "true",
+      "local": "Patio pinheiros",
+      "data": "2022-06-14",
+      "status": "ABERTO",
+      "id": 3
+    }
+  ],
+  "frotas": [
+    {
+      "id": 1,
+      "nome": "P"
     },
     {
       "id": 2,
-      "trem": "TREM B",
-      "carro": "CARRO B1",
-      "descricao_falha": "Falha no eletrica",
-      "pt": "true",
-      "in": "false",
-      "local": "Garagem",
-      "data": "2022-06-04",
-      "status": "ABERTO"
-    },
-    {
-      "trem": "TREM B",
-      "carro": "CARRO B1",
-      "descricao_falha": "dfdffdf",
-      "pt": "true",
-      "in": "true",
-      "local": "dfdfdfdf",
-      "data": "2022-06-12",
-      "status": "ATENDIMENTO",
-      "id": 3
+      "nome": "Q"
     }
   ]
 }
