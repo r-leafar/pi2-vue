@@ -78,7 +78,7 @@
         </div>
       </div>
       <div id="secao1_3">
-        <button id="btn-historico-buscar" v-on:click="buscarHistorico">Buscar</button>
+        <button id="btn-historico-buscar" v-on:click="buscarHistorico">Buscar{{store.counter}}</button>
       </div>
     </div>
 
@@ -120,10 +120,19 @@
 <script>
 import Menu from "../components/Menu.vue";
 const dayjs = require("dayjs");
+import { useMainStore } from "../stores/main";
 
 export default {
   name: "Historico",
   components: { Menu },
+  setup() {
+    const store = useMainStore();
+
+    return {
+      // you can return the whole store instance to use it in the template
+      store,
+    };
+  },
   data() {
     return {
       frotas: null,
@@ -161,7 +170,8 @@ export default {
       }
     },
     async carregarApontamento(idpedido) {
-      this.$router.push({ name: "apontamento"});
+      this.store.setpedido(idpedido);
+      this.$router.push({ name: "apontamento" });
     },
     async buscarHistorico() {
       const data = {
@@ -170,6 +180,7 @@ export default {
         trem: this.trem,
         descricao_falha: this.sistema,
       };
+      
       let validform = true; /*
       for (const key in data) {
         if (data[key] == null || data[key] == "") {
