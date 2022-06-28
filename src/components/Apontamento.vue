@@ -1,6 +1,6 @@
 <template>
-  <router-link to="/"><Navbar /></router-link>
-  <Menu />
+  <router-link to="/"><Navbar @toggleCss="toggleCssNot" /></router-link>
+  <Menu :toggleCss="storeToggle.getValue"/>
   <main>
     <div id="apontamento-secao-1">
       <div
@@ -189,6 +189,9 @@ export default {
         this.css_tree = "black";
         this.css_four = "white";
       }
+    },
+    toggleCssNot() {
+      this.changeCss(!this.storeToggle.getValue);
     },
     toggleCss() {
       this.changeCss(this.storeToggle.getValue);

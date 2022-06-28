@@ -1,6 +1,8 @@
 <template>
-  <router-link to="/"><Navbar /></router-link>
-  <Menu />
+  <router-link to="/">
+    <Navbar @toggleCss="toggleCssNot" />
+  </router-link>
+  <Menu :toggleCss="storeToggle.getValue"/>
   <main>
     <div id="secao1">
       <div style="width: 15%; float: left">
@@ -10,14 +12,8 @@
           </div>
           <div class="rTableRow">
             <div class="rTableCell">
-              <input
-                type="date"
-                id="start"
-                name="trip-start"
-                min="2000-01-01"
-                max="2023-01-01"
-                v-model="data_inicial"
-              />
+              <input type="date" id="start" name="trip-start" min="2000-01-01" max="2023-01-01"
+                v-model="data_inicial" />
             </div>
           </div>
         </div>
@@ -27,23 +23,13 @@
           </div>
           <div class="rTableRow">
             <div class="rTableCell">
-              <input
-                type="date"
-                id="start"
-                name="trip-start"
-                min="2000-01-01"
-                max="2023-01-01"
-                v-model="data_final"
-              />
+              <input type="date" id="start" name="trip-start" min="2000-01-01" max="2023-01-01" v-model="data_final" />
             </div>
           </div>
         </div>
       </div>
       <div>
-        <div
-          class="rTable"
-          style="margin-top: 15px; padding-left: 100px; padding-top: 2%"
-        >
+        <div class="rTable" style="margin-top: 15px; padding-left: 100px; padding-top: 2%">
           <div class="rTableRow">
             <div class="rTableHead">Frota</div>
             <div class="rTableHead">Trem</div>
@@ -51,13 +37,7 @@
           </div>
           <div class="rTableRow">
             <div class="rTableCell">
-              <select
-                name="frota"
-                v-on:change="MontarListaTrem"
-                :disabled="frota == ''"
-                v-model="frota"
-                id="frota"
-              >
+              <select name="frota" v-on:change="MontarListaTrem" :disabled="frota == ''" v-model="frota" id="frota">
                 <option disabled value="">Selecione</option>
                 <option v-for="frota in frotas" :key="frota.id" :value="frota.nome">
                   {{ frota.nome }}
@@ -86,10 +66,7 @@
     </div>
 
     <div id="secao2">
-      <div
-        class="rTable"
-        style="width: 100%; margin-top: 15px; padding-left: 0px; padding-top: 3%"
-      >
+      <div class="rTable" style="width: 100%; margin-top: 15px; padding-left: 0px; padding-top: 3%">
         <div class="rTableRow">
           <div class="rTableHead">Id</div>
           <div class="rTableHead">Usuario</div>
@@ -136,7 +113,7 @@ export default {
 
     return {
       // you can return the whole store instance to use it in the template
-      store,storeToggle
+      store, storeToggle
     };
   },
   data() {
@@ -152,9 +129,9 @@ export default {
       lista_pedidos: null,
       css_one: "#F00AC9",
       css_two: "#4784fb",
-      css_tree:"#c4c4c4",
-      css_four:"black"
-  
+      css_tree: "#c4c4c4",
+      css_four: "black"
+
     };
   },
   methods: {
@@ -206,19 +183,22 @@ export default {
         this.lista_pedidos = data;
       }
     },
-      changeCss(ativo) {
-      
-        if (ativo) {
-          this.css_one = "#F00AC9";
-          this.css_two = "#4784fb";
-          this.css_tree ="#c4c4c4";
-         this.css_four = "black";
-        } else {
-          this.css_one = "white";
-          this.css_two = "black";
-          this.css_tree ="black";
-          this.css_four = "white";        }
-      },
+    changeCss(ativo) {
+
+      if (ativo) {
+        this.css_one = "#F00AC9";
+        this.css_two = "#4784fb";
+        this.css_tree = "#c4c4c4";
+        this.css_four = "black";
+      } else {
+        this.css_one = "white";
+        this.css_two = "black";
+        this.css_tree = "black";
+        this.css_four = "white";
+      }
+    }, toggleCssNot() {
+      this.changeCss(!this.storeToggle.getValue);
+    },
     toggleCss() {
       this.changeCss(this.storeToggle.getValue);
     },
@@ -236,8 +216,9 @@ export default {
   float: right;
   margin-right: 25%;
 }
-#secao2 {
-}
+
+#secao2 {}
+
 #btn-historico-buscar {
   font-size: 25px;
   text-shadow: 1px 1px 2px black;
@@ -254,41 +235,50 @@ main {
   height: 100vh;
   background-color: v-bind(css_one);
 }
+
 /*Formatação da tabela*/
 .rTable {
   display: table;
   width: 100%;
 }
+
 .rTableRow {
   display: table-row;
 }
+
 .rTableHeading {
   display: table-header-group;
   background-color: v-bind(css_tree);
 }
+
 .rTableHead {
   background-color: v-bind(css_tree);
-  color:v-bind(css_four);
+  color: v-bind(css_four);
   font-weight: bold;
 }
+
 .rTableCell,
 .rTableHead {
   display: table-cell;
   padding: 3px 10px;
 }
+
 .rTableCell {
   background-color: white;
 }
+
 .rTableHeading {
   display: table-header-group;
   background-color: #c4c4c4;
   font-weight: bold;
 }
+
 .rTableFoot {
   display: table-footer-group;
   font-weight: bold;
   background-color: #ddd;
 }
+
 .rTableBody {
   display: table-row-group;
 }

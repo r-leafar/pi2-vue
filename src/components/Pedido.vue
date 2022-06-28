@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/"><Navbar/></router-link>
+  <router-link to="/"><Navbar @toggleCss="toggleCssNot"/></router-link>
   <Menu @limpar-form-pedido="clearForm" :toggleCss="storeToggle.getValue" />
   <main>
     <div id="conteudo4">
@@ -169,6 +169,9 @@ export default {
     };
   },
   methods: {
+    foo(){
+      alert("oie")
+    },
     async excluirPedido(idpedido) {
       let escolha = confirm("Você tem certeza que deseja excluir esse pedido?");
       if (escolha === true) {
@@ -326,6 +329,10 @@ export default {
         this.css_four ="black"
       }
     },
+    toggleCssNot() {
+      this.changeCss(!this.storeToggle.getValue);
+     }
+,
      toggleCss() {
       this.changeCss(this.storeToggle.getValue);
      }
