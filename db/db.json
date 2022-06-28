@@ -74,8 +74,6 @@
       "trem": "TREM B",
       "carro": "CARRO B2",
       "descricao_falha": "Falha no eletrica",
-      "observacao":[""],
-      "reparo":"",
       "pt": "false",
       "in": "false",
       "local": "Garagem",
@@ -85,14 +83,18 @@
         "id": 1,
         "nome": "SAULO"
       },
+      "reparo": null,
+      "observacao": [],
       "id": 1
     },
     {
       "trem": "TREM B",
       "carro": "CARRO B2",
       "descricao_falha": "Falha acesso",
-      "observacao":[""],
-      "reparo":"",
+      "observacao": [
+        ""
+      ],
+      "reparo": "",
       "pt": "true",
       "in": "true",
       "local": "Patio vila maria",
@@ -108,8 +110,11 @@
       "trem": "TREM B",
       "carro": "CARRO B1",
       "descricao_falha": "Falha muito dificil",
-      "observacao":["Feito esquema 1","UHUUUUU"],
-      "reparo":"",
+      "observacao": [
+        "Feito esquema 1",
+        "UHUUUUU"
+      ],
+      "reparo": "",
       "pt": "true",
       "in": "true",
       "local": "Patio pinheiros",
@@ -120,6 +125,25 @@
         "nome": "SAULO"
       },
       "id": 3
+    },
+    {
+      "trem": "TREM A",
+      "carro": "CARRO A2",
+      "descricao_falha": "Falha no radio",
+      "pt": "false",
+      "in": "true",
+      "local": "Garagem",
+      "data": "2022-06-27",
+      "status": "ABERTO",
+      "usuario": {
+        "id": 1,
+        "nome": "SAULO"
+      },
+      "reparo": "",
+      "observacao": [
+        ""
+      ],
+      "id": 4
     }
   ],
   "frotas": [
@@ -130,6 +154,16 @@
     {
       "id": 2,
       "nome": "Q"
+    }
+  ],
+  "equipamentos": [
+    {
+      "id": 1,
+      "nome": "RADIO SALA COMANDO"
+    },
+    {
+      "id": 2,
+      "nome": "TRANSPONDER"
     }
   ]
 }

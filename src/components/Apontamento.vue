@@ -1,4 +1,5 @@
 <template>
+<router-link to="/"><Navbar /></router-link>
   <Menu />
   <main>
     <div id="apontamento-secao-1">
@@ -30,36 +31,63 @@
           <div class="rTableCell">
             <input name="trem" id="trem" type="text" v-model="trem" disabled />
           </div>
-          <div class="rTableCell">   <input name="carro" id="carro" type="text" v-model="carro" disabled /></div>
-          <div class="rTableCell"><input name="descricao_falha" id="descricao_falha" type="text" v-model="descricao_falha" disabled /></div>
-          <div class="rTableCell"><input name="data_pedido" id="data_pedido" type="text" v-model="data_pedido" disabled /></div>
-          <div class="rTableCell"><input name="local" id="local" type="text" v-model="local" disabled /></div>
-          <div class="rTableCell"><input name="pt" id="pt" type="text" v-model="pt" disabled /></div>
-          <div class="rTableCell"><input name="in" id="in" type="text" v-model="in" disabled /></div>
-          <div class="rTableCell"><input name="status" id="status" type="text" v-model="status" disabled /></div>
+          <div class="rTableCell">
+            <input name="carro" id="carro" type="text" v-model="carro" disabled />
+          </div>
+          <div class="rTableCell">
+            <input
+              name="descricao_falha"
+              id="descricao_falha"
+              type="text"
+              v-model="descricao_falha"
+              disabled
+            />
+          </div>
+          <div class="rTableCell">
+            <input
+              name="data_pedido"
+              id="data_pedido"
+              type="text"
+              v-model="data_pedido"
+              disabled
+            />
+          </div>
+          <div class="rTableCell">
+            <input name="local" id="local" type="text" v-model="local" disabled />
+          </div>
+          <div class="rTableCell">
+            <input name="pt" id="pt" type="text" v-model="pt" disabled />
+          </div>
+          <div class="rTableCell">
+            <input name="in" id="in" type="text" v-model="in" disabled />
+          </div>
+          <div class="rTableCell">
+            <input name="status" id="status" type="text" v-model="status" disabled />
+          </div>
         </div>
       </div>
     </div>
     <div id="apontamento-secao-2">
       <div class="rTable">
         <div class="rTableRow">
-          <div class="rTableHead">Carro</div>
           <div class="rTableHead">Equipamento</div>
-          <div class="rTableHead">Defeito</div>
           <div class="rTableHead">Reparo</div>
           <div class="rTableHead">Data</div>
         </div>
         <div class="rTableRow">
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
-          <div class="rTableCell">Lorem ipsum</div>
+          <div class="rTableCell">
+            <select style="width:100%;" name="equipamento" id="equipamento" v-model="equipamento">
+              <option disabled value="">Selecione</option>
+              <option v-for="equip in equipamentos" :key="equip.id" :value="equip.nome">
+                {{ equip.nome }}
+              </option>
+            </select>
+          </div>
+          <div class="rTableCell"><input style="width:100%;" type="text" name="reparo" id="reparo" v-model="reparo"></div>
           <div class="rTableCell">Lorem ipsum</div>
         </div>
       </div>
-      <button id="btn-apontamento-atualizar" v-on:click="">
-        Atualizar
-      </button>
+      <button id="btn-apontamento-atualizar" v-on:click="">Atualizar</button>
     </div>
     <div id="apontamento-secao-3">
       <div class="rTable">
@@ -77,11 +105,12 @@
 <script>
 import { useMainStore } from "../stores/main";
 import Menu from "../components/Menu.vue";
+import Navbar from '../components/Navbar.vue';
 const dayjs = require("dayjs");
 
 export default {
   name: "Apontamento",
-  components: { Menu },
+  components: { Menu,Navbar },
   setup() {
     const store = useMainStore();
 
@@ -94,16 +123,23 @@ export default {
     return {
       idpedido: null,
       trem: null,
-      carro:null,
-      descricao_falha:null,
-      data_pedido:null,
-      local:null,
-      pt:null,
-      in:null,
-      status:null
+      carro: null,
+      descricao_falha: null,
+      data_pedido: null,
+      local: null,
+      pt: null,
+      in: null,
+      status: null,
+      equipamentos: null,
+      reparo:null
     };
   },
   methods: {
+    async getEquipamentos() {
+      const req = await fetch(`${process.env.VUE_APP_API_URL}equipamentos`);
+      const data = await req.json();
+      this.equipamentos = data;
+    },
     async getPedidos() {
       this.idpedido = this.store.getValue;
       if (this.idpedido > 0) {
@@ -115,16 +151,16 @@ export default {
         this.descricao_falha = data["descricao_falha"];
         this.data_pedido = data["data"];
         this.local = data["local"];
-        this.pt =  data["pt"]=="true"?"SIM":"NAO";
-        this.in = data["in"]=="true"?"SIM":"NAO";
-        this.status = data["status"]
+        this.pt = data["pt"] == "true" ? "SIM" : "NAO";
+        this.in = data["in"] == "true" ? "SIM" : "NAO";
+        this.status = data["status"];
         console.log(data);
-
       }
     },
   },
   mounted() {
     this.getPedidos();
+    this.getEquipamentos();
   },
 };
 </script>
@@ -163,7 +199,6 @@ main {
 }
 .rTableRow {
   display: table-row;
-
 }
 .rTableHeading {
   display: table-header-group;

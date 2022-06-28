@@ -1,4 +1,5 @@
 <template>
+  <router-link to="/"><Navbar /></router-link>
   <Menu />
   <main>
     <div id="secao1">
@@ -41,7 +42,7 @@
       <div>
         <div
           class="rTable"
-          style="width: 25%; margin-top: 15px; padding-left: 100px; padding-top: 2%"
+          style="margin-top: 15px; padding-left: 100px; padding-top: 2%"
         >
           <div class="rTableRow">
             <div class="rTableHead">Frota</div>
@@ -78,7 +79,9 @@
         </div>
       </div>
       <div id="secao1_3">
-        <button id="btn-historico-buscar" v-on:click="buscarHistorico">Buscar{{store.counter}}</button>
+        <button id="btn-historico-buscar" v-on:click="buscarHistorico">
+          Buscar{{ store.counter }}
+        </button>
       </div>
     </div>
 
@@ -119,18 +122,21 @@
 
 <script>
 import Menu from "../components/Menu.vue";
+import Navbar from "../components/Navbar.vue";
 const dayjs = require("dayjs");
 import { useMainStore } from "../stores/main";
+import { useToggleStore } from "../stores/toggle";
 
 export default {
   name: "Historico",
-  components: { Menu },
+  components: { Menu, Navbar },
   setup() {
     const store = useMainStore();
+    const storeToggle = useToggleStore();
 
     return {
       // you can return the whole store instance to use it in the template
-      store,
+      store,storeToggle
     };
   },
   data() {
@@ -144,6 +150,11 @@ export default {
       data_final: null,
       sistema: null,
       lista_pedidos: null,
+      css_one: "#F00AC9",
+      css_two: "#4784fb",
+      css_tree:"#c4c4c4",
+      css_four:"black"
+  
     };
   },
   methods: {
@@ -180,7 +191,7 @@ export default {
         trem: this.trem,
         descricao_falha: this.sistema,
       };
-      
+
       let validform = true; /*
       for (const key in data) {
         if (data[key] == null || data[key] == "") {
@@ -195,10 +206,27 @@ export default {
         this.lista_pedidos = data;
       }
     },
+      changeCss(ativo) {
+      
+        if (ativo) {
+          this.css_one = "#F00AC9";
+          this.css_two = "#4784fb";
+          this.css_tree ="#c4c4c4";
+         this.css_four = "black";
+        } else {
+          this.css_one = "white";
+          this.css_two = "black";
+          this.css_tree ="black";
+          this.css_four = "white";        }
+      },
+    toggleCss() {
+      this.changeCss(this.storeToggle.getValue);
+    },
   },
   mounted() {
     this.carregarFrota();
     this.getTrens();
+    this.changeCss(!this.storeToggle.getValue);
   },
 };
 </script>
@@ -219,12 +247,12 @@ export default {
   border-radius: 100%;
   height: 90px;
   color: #fff;
-  background-color: #4784fb;
+  background-color: v-bind(css_two);
 }
 
 main {
   height: 100vh;
-  background-color: rgb(240, 10, 201);
+  background-color: v-bind(css_one);
 }
 /*Formatação da tabela*/
 .rTable {
@@ -236,10 +264,11 @@ main {
 }
 .rTableHeading {
   display: table-header-group;
-  background-color: #c4c4c4;
+  background-color: v-bind(css_tree);
 }
 .rTableHead {
-  background-color: #c4c4c4;
+  background-color: v-bind(css_tree);
+  color:v-bind(css_four);
   font-weight: bold;
 }
 .rTableCell,

@@ -1,5 +1,6 @@
 <template>
-  <Menu @limpar-form-pedido="clearForm" />
+  <router-link to="/"><Navbar/></router-link>
+  <Menu @limpar-form-pedido="clearForm" :toggleCss="storeToggle.getValue" />
   <main>
     <div id="conteudo4">
       <div>
@@ -127,10 +128,19 @@
 </template>
 <script>
 import Menu from "../components/Menu.vue";
+import Navbar from "../components/Navbar.vue";
+import { useToggleStore } from "../stores/toggle";
 const dayjs = require("dayjs");
 export default {
   name: "Pedido",
-  components: { Menu },
+  components: { Menu, Navbar },
+  setup() {
+    const storeToggle = useToggleStore();
+    return {
+      // you can return the whole store instance to use it in the template
+      storeToggle,
+    };
+  },
   data() {
     return {
       trens: null,
@@ -146,6 +156,16 @@ export default {
       status: null,
       lista_pedidos: null,
       id: null,
+      usuario: {
+        id: 1,
+        nome: "SAULO",
+      },
+      reparo: null,
+      observacao: [],
+      css_one:"#c4c4c4",
+      css_two:" #17CE11",
+      css_tree:"black",
+      css_four:"#4784fb"
     };
   },
   methods: {
@@ -204,6 +224,9 @@ export default {
         local: this.local,
         data: this.data,
         status: this.status,
+        usuario: this.usuario,
+        reparo: null,
+        observacao: [],
       };
 
       const dataJson = JSON.stringify(data);
@@ -228,13 +251,19 @@ export default {
         local: this.local,
         data: dayjs().format("YYYY-MM-DD"),
         status: this.status,
+        usuario: this.usuario,
+        reparo: "",
+        observacao: [""],
       };
 
       let validform = true;
       for (const key in data) {
+        //Ignora os itens que estiver no array
+        if (["usuario", "reparo", "observacao"].includes(key)) {
+          continue;
+        }
 
         if (data[key] == null || data[key] == "") {
-          
           validform = false;
           alert("Preencha todos os campos");
           break;
@@ -284,11 +313,28 @@ export default {
         this.carro = null;
       }
     },
+    changeCss(ativo) {
+      if (ativo) {
+        this.css_one ="#c4c4c4"
+        this.css_two =" #17CE11"
+        this.css_tree =" black"
+        this.css_four ="#4784fb"
+      } else {
+        this.css_one ="black"
+        this.css_two="white"
+        this.css_tree =" white"
+        this.css_four ="black"
+      }
+    },
+     toggleCss() {
+      this.changeCss(this.storeToggle.getValue);
+     }
   },
   mounted() {
     this.getTrens();
     this.getPedidos();
     this.getStatus();
+    this.changeCss(!this.storeToggle.getValue);
   },
 };
 </script>
@@ -300,7 +346,7 @@ input {
 }
 #conteudo4 {
   height: 100vh;
-  background-color: rgb(23, 206, 17);
+  background-color: v-bind(css_two);
   grid-area: conteudo4;
 }
 table {
@@ -308,7 +354,8 @@ table {
   width: 100%;
 }
 thead {
-  background-color: #c4c4c4;
+  background-color:v-bind(css_one);
+  color:v-bind(css_tree);
 }
 tbody {
   background-color: #fff;
@@ -327,7 +374,7 @@ tbody {
   border-radius: 80%;
   height: 90px;
   color: #fff;
-  background-color: #4784fb;
+  background-color: v-bind(css_four);
   position: absolute;
   left: 50%;
   transform: translate(140%, -170%);

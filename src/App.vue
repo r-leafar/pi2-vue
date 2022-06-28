@@ -1,5 +1,4 @@
 <template>
-<router-link to="/"><Navbar /></router-link>
   <router-view/>
 </template>
 <script>
@@ -13,14 +12,18 @@ components:{
 </script>
 
 <style>
-    * {
+  
+  * {
         margin: 0;
         padding: 0;
     }
+      a{
+        text-decoration:none;
+    }
+    /*
      body {
         background-color: #52CFF6;
     }
-    a{
-        text-decoration:none;
-    }
+  
+************** */
 </style>
