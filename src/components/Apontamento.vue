@@ -1,11 +1,11 @@
 <template>
-<router-link to="/"><Navbar /></router-link>
+  <router-link to="/"><Navbar /></router-link>
   <Menu />
   <main>
     <div id="apontamento-secao-1">
       <div
         class="rTable"
-        style="width: 100%; margin-top: 15px; padding-left: 0px; padding-top: 0%"
+        style="width: 100%;padding-left: 0px; padding-top: 0%"
       >
         <div class="rTableRow">
           <div class="rTableHead">Pedido</div>
@@ -76,14 +76,27 @@
         </div>
         <div class="rTableRow">
           <div class="rTableCell">
-            <select style="width:100%;" name="equipamento" id="equipamento" v-model="equipamento">
+            <select
+              style="width: 100%"
+              name="equipamento"
+              id="equipamento"
+              v-model="equipamento"
+            >
               <option disabled value="">Selecione</option>
               <option v-for="equip in equipamentos" :key="equip.id" :value="equip.nome">
                 {{ equip.nome }}
               </option>
             </select>
           </div>
-          <div class="rTableCell"><input style="width:100%;" type="text" name="reparo" id="reparo" v-model="reparo"></div>
+          <div class="rTableCell">
+            <input
+              style="width: 100%"
+              type="text"
+              name="reparo"
+              id="reparo"
+              v-model="reparo"
+            />
+          </div>
           <div class="rTableCell">Lorem ipsum</div>
         </div>
       </div>
@@ -104,19 +117,22 @@
 
 <script>
 import { useMainStore } from "../stores/main";
+import { useToggleStore } from "../stores/toggle";
 import Menu from "../components/Menu.vue";
-import Navbar from '../components/Navbar.vue';
+import Navbar from "../components/Navbar.vue";
 const dayjs = require("dayjs");
 
 export default {
   name: "Apontamento",
-  components: { Menu,Navbar },
+  components: { Menu, Navbar },
   setup() {
     const store = useMainStore();
+    const storeToggle = useToggleStore();
 
     return {
       // you can return the whole store instance to use it in the template
       store,
+      storeToggle,
     };
   },
   data() {
@@ -131,7 +147,11 @@ export default {
       in: null,
       status: null,
       equipamentos: null,
-      reparo:null
+      reparo: null,
+      css_one: "#F7F30A",
+      css_two:"#4784fb",
+      css_tree:"#c4c4c4",
+      css_four:"black"
     };
   },
   methods: {
@@ -157,10 +177,28 @@ export default {
         console.log(data);
       }
     },
+    changeCss(ativo) {
+      if (ativo) {
+        this.css_one = "#F7F30A";
+        this.css_two = "#4784fb;";
+        this.css_tree = "#c4c4c4;";
+        this.css_four = "black";
+      } else {
+        this.css_one = "white";
+        this.css_two = "black";
+        this.css_tree = "black";
+        this.css_four = "white";
+      }
+    },
+    toggleCss() {
+      this.changeCss(this.storeToggle.getValue);
+      this.changeCss(!this.storeToggle.getValue);
+    },
   },
   mounted() {
     this.getPedidos();
     this.getEquipamentos();
+    this.changeCss(!this.storeToggle.getValue);
   },
 };
 </script>
@@ -175,12 +213,12 @@ export default {
   border-radius: 100%;
   height: 90px;
   color: #fff;
-  background-color: #4784fb;
+  background-color: v-bind(css_two);
   margin: 4% 6%;
 }
 main {
   height: 100vh;
-  background-color: rgb(247, 243, 10);
+  background-color: v-bind(css_one);
 }
 #apontamento-secao-2 > div.rTable {
   width: 75%;
@@ -202,11 +240,12 @@ main {
 }
 .rTableHeading {
   display: table-header-group;
-  background-color: #c4c4c4;
+  background-color: v-bind(css_tree);
 }
 .rTableHead {
-  background-color: #c4c4c4;
+  background-color: v-bind(css_tree);
   font-weight: bold;
+  color: v-bind(css_four);
   text-transform: uppercase;
 }
 .rTableCell,
@@ -219,7 +258,7 @@ main {
 }
 .rTableHeading {
   display: table-header-group;
-  background-color: #c4c4c4;
+  background-color:v-bind(css_tree);
   font-weight: bold;
 }
 .rTableFoot {
