@@ -180,8 +180,8 @@ export default {
     changeCss(ativo) {
       if (ativo) {
         this.css_one = "#F7F30A";
-        this.css_two = "#4784fb;";
-        this.css_tree = "#c4c4c4;";
+        this.css_two = "#4784fb";
+        this.css_tree = "#c4c4c4";
         this.css_four = "black";
       } else {
         this.css_one = "white";
@@ -195,7 +195,6 @@ export default {
     },
     toggleCss() {
       this.changeCss(this.storeToggle.getValue);
-      this.changeCss(!this.storeToggle.getValue);
     },
   },
   mounted() {
