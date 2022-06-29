@@ -1,12 +1,9 @@
 <template>
   <router-link to="/"><Navbar @toggleCss="toggleCssNot" /></router-link>
-  <Menu :toggleCss="storeToggle.getValue"/>
+  <Menu :toggleCss="storeToggle.getValue" />
   <main>
     <div id="apontamento-secao-1">
-      <div
-        class="rTable"
-        style="width: 100%;padding-left: 0px; padding-top: 0%"
-      >
+      <div class="rTable" style="width: 100%; padding-left: 0px; padding-top: 0%">
         <div class="rTableRow">
           <div class="rTableHead">Pedido</div>
           <div class="rTableHead">Trem</div>
@@ -97,7 +94,9 @@
               v-model="reparo"
             />
           </div>
-          <div class="rTableCell">Lorem ipsum</div>
+          <div class="rTableCell">
+            <input type="text" name="datareparo" id="datareparo" disabled />
+          </div>
         </div>
       </div>
       <button id="btn-apontamento-atualizar" v-on:click="">Atualizar</button>
@@ -108,7 +107,41 @@
           <div class="rTableHead">Observação</div>
         </div>
         <div class="rTableRow">
-          <div class="rTableCell">Lorem ipsum</div>
+          <div class="rTableCell">
+            <span v-if="typeof observacao_edicao === 'object'">
+              <input
+                type="text"
+                name="observacao"
+                class="observacao"
+                v-model="observacao_edicao.descricao"
+              />
+            </span>
+            <span v-else>
+              <input
+                type="text"
+                name="observacao"
+                class="observacao"
+                v-model="observacao_edicao"
+              />
+            </span>
+            <button
+              v-on:click.prevent="changeObservacao"
+              style="width: 4%; font-weight: bold"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div v-for="obs in observacao" class="rTableRow">
+          <div class="rTableCell">
+            {{ obs.descricao }}
+            <button style="float: right" v-on:click.prevent="deleteObservacao(obs.id)">
+              [ x ]
+            </button>
+            <button v-on:click.prevent="getObservacao(obs.id)" style="float: right">
+              [ # ]
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -148,13 +181,50 @@ export default {
       status: null,
       equipamentos: null,
       reparo: null,
+      observacao_edicao: "",
+      observacao: null,
       css_one: "#F7F30A",
-      css_two:"#4784fb",
-      css_tree:"#c4c4c4",
-      css_four:"black"
+      css_two: "#4784fb",
+      css_tree: "#c4c4c4",
+      css_four: "black",
     };
   },
   methods: {
+    async deleteObservacao(observacaoId) {
+      const req = await fetch(
+        `${process.env.VUE_APP_API_URL}observacao/${observacaoId}`,
+        { method: "DELETE", headers: { "Content-Type": "application/json" } }
+      );
+      this.getPedidos();
+    },
+    async changeObservacao() {
+      if (typeof this.observacao_edicao === "object") {
+        const req = await fetch(
+          `${process.env.VUE_APP_API_URL}observacao/${this.observacao_edicao.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(this.observacao_edicao),
+          }
+        );
+      } else {
+        const req = await fetch(`${process.env.VUE_APP_API_URL}observacao`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pedidoId: this.idpedido,
+            descricao: this.observacao_edicao,
+          }),
+        });
+      }
+
+      this.getPedidos();
+    },
+    async getObservacao(observacaoId) {
+      const req = await fetch(`${process.env.VUE_APP_API_URL}observacao/${observacaoId}`);
+      const data = await req.json();
+      this.observacao_edicao = data;
+    },
     async getEquipamentos() {
       const req = await fetch(`${process.env.VUE_APP_API_URL}equipamentos`);
       const data = await req.json();
@@ -163,8 +233,10 @@ export default {
     async getPedidos() {
       this.idpedido = this.store.getValue;
       if (this.idpedido > 0) {
-        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/${this.idpedido}`);
-        const data = await req.json();
+        let query_string = `pedidos?_embed=observacao&id=${this.idpedido}`;
+
+        const req = await fetch(`${process.env.VUE_APP_API_URL}${query_string}`);
+        const data = (await req.json())[0];
         this.idpedido = data["id"];
         this.trem = data["trem"];
         this.carro = data["carro"];
@@ -174,7 +246,8 @@ export default {
         this.pt = data["pt"] == "true" ? "SIM" : "NAO";
         this.in = data["in"] == "true" ? "SIM" : "NAO";
         this.status = data["status"];
-        console.log(data);
+        this.observacao = data["observacao"];
+        this.observacao_edicao = "";
       }
     },
     changeCss(ativo) {
@@ -206,6 +279,9 @@ export default {
 </script>
 
 <style scoped>
+.observacao {
+  width: 94%;
+}
 #btn-apontamento-atualizar {
   font-size: 25px;
   text-shadow: 1px 1px 2px black;
@@ -260,7 +336,7 @@ main {
 }
 .rTableHeading {
   display: table-header-group;
-  background-color:v-bind(css_tree);
+  background-color: v-bind(css_tree);
   font-weight: bold;
 }
 .rTableFoot {

@@ -161,7 +161,6 @@ export default {
         nome: "SAULO",
       },
       reparo: null,
-      observacao: [],
       css_one:"#c4c4c4",
       css_two:" #17CE11",
       css_tree:"black",
@@ -229,7 +228,6 @@ export default {
         status: this.status,
         usuario: this.usuario,
         reparo: null,
-        observacao: [],
       };
 
       const dataJson = JSON.stringify(data);
@@ -256,13 +254,12 @@ export default {
         status: this.status,
         usuario: this.usuario,
         reparo: "",
-        observacao: [""],
       };
 
       let validform = true;
       for (const key in data) {
         //Ignora os itens que estiver no array
-        if (["usuario", "reparo", "observacao"].includes(key)) {
+        if (["usuario", "reparo"].includes(key)) {
           continue;
         }
 

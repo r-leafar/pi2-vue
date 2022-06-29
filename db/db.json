@@ -74,7 +74,7 @@
       "trem": "TREM B",
       "carro": "CARRO B2",
       "descricao_falha": "Falha no eletrica",
-      "pt": "false",
+      "pt": "true",
       "in": "false",
       "local": "Garagem",
       "data": "2022-06-04",
@@ -84,19 +84,14 @@
         "nome": "SAULO"
       },
       "reparo": null,
-      "observacao": [],
       "id": 1
     },
     {
       "trem": "TREM B",
       "carro": "CARRO B2",
       "descricao_falha": "Falha acesso",
-      "observacao": [
-        ""
-      ],
-      "reparo": "",
       "pt": "true",
-      "in": "true",
+      "in": "false",
       "local": "Patio vila maria",
       "data": "2022-06-12",
       "status": "ATENDIMENTO",
@@ -104,17 +99,13 @@
         "id": 1,
         "nome": "SAULO"
       },
+      "reparo": null,
       "id": 2
     },
     {
-      "trem": "TREM B",
-      "carro": "CARRO B1",
+      "trem": "TREM C",
+      "carro": "CARRO C1",
       "descricao_falha": "Falha muito dificil",
-      "observacao": [
-        "Feito esquema 1",
-        "UHUUUUU"
-      ],
-      "reparo": "",
       "pt": "true",
       "in": "true",
       "local": "Patio pinheiros",
@@ -124,6 +115,7 @@
         "id": 1,
         "nome": "SAULO"
       },
+      "reparo": null,
       "id": 3
     },
     {
@@ -140,9 +132,6 @@
         "nome": "SAULO"
       },
       "reparo": "",
-      "observacao": [
-        ""
-      ],
       "id": 4
     }
   ],
@@ -164,6 +153,23 @@
     {
       "id": 2,
       "nome": "TRANSPONDER"
+    }
+  ],
+  "observacao": [
+    {
+      "pedidoId": 1,
+      "id": 3,
+      "descricao": "RAFAEL SABOIA "
+    },
+    {
+      "pedidoId": 1,
+      "descricao": "SDSDSDSDSD",
+      "id": 5
+    },
+    {
+      "pedidoId": 1,
+      "descricao": "dfdfdfdfdf",
+      "id": 6
     }
   ]
 }

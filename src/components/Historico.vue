@@ -86,7 +86,7 @@
           <div class="rTableCell">{{ pedido.reparo }}</div>
           <div class="rTableCell">{{ pedido.data }}</div>
           <div class="rTableCell">
-            {{ pedido.observacao.pop() }}
+            {{ "pedido.observacao.pop()" }}
             <button style="float: right" v-on:click="carregarApontamento(pedido.id)">
               ###
             </button>
@@ -239,11 +239,19 @@ main {
   height: 100vh;
   background-color: v-bind(css_one);
 }
-
+#trem{
+  width:50%;
+}
+#frota{
+  width:50%;
+}
+#sistema{
+  width:90%;
+}
 /*Formatação da tabela*/
 .rTable {
   display: table;
-  width: 100%;
+  width: 90%;
 }
 
 .rTableRow {
