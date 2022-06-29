@@ -125,7 +125,7 @@ export default {
       trem: null,
       data_inicial: null,
       data_final: null,
-      sistema: null,
+      sistema: "",
       lista_pedidos: null,
       css_one: "#F00AC9",
       css_two: "#4784fb",
@@ -178,7 +178,11 @@ export default {
         }
       }*/
       if (validform) {
-        const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos`);
+       let  query_api = `pedidos?descricao_falha_like=${this.sistema}`
+        query_api += this.trem !== null ?`&trem=${this.trem}`:""
+        query_api += this.data_inicial !== null && this.data_final!==null ?`&data_gte=${this.data_inicial}&data_lte=${this.data_final}`:""
+
+        const req = await fetch(`${process.env.VUE_APP_API_URL}${query_api}`);
         const data = await req.json();
         this.lista_pedidos = data;
       }
