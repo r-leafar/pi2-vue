@@ -95,11 +95,11 @@
             />
           </div>
           <div class="rTableCell">
-            <input type="text" name="datareparo" id="datareparo" disabled />
+            <input type="text" name="datareparo" id="datareparo"  v-model="data_pedido" disabled />
           </div>
         </div>
       </div>
-      <button id="btn-apontamento-atualizar" v-on:click="">Atualizar</button>
+      <button id="btn-apontamento-atualizar" v-on:click="finalizarPedido">Atualizar</button>
     </div>
     <div id="apontamento-secao-3">
       <div class="rTable">
@@ -180,7 +180,12 @@ export default {
       in: null,
       status: null,
       equipamentos: null,
+      equipamento:null,
       reparo: null,
+       usuario: {
+        id: 1,
+        nome: "SAULO",
+      },
       observacao_edicao: "",
       observacao: null,
       css_one: "#F7F30A",
@@ -190,6 +195,46 @@ export default {
     };
   },
   methods: {
+    async finalizarPedido() {
+      const data = {
+        trem: this.trem,
+        carro: this.carro,
+        descricao_falha: this.descricao_falha,
+        pt: this.pt,
+        in: this.in,
+        local: this.local,
+        data: dayjs().format("YYYY-MM-DD"),
+        status: this.status,
+        usuario: this.usuario,
+        reparo: this.reparo,
+        equipamento:this.equipamento
+      };
+
+      let validform = true;
+      for (const key in data) {
+                //Ignora os itens que estiver no array
+        if (["data"].includes(key))continue;
+
+        if (data[key] == null || data[key] == "") {
+          validform = false;
+          alert(`Preencha todos os campos\n Verifique ${key}`);
+          break;
+        }
+      }
+
+      //valida se todos os campos estão preenchidos do formulário
+      if (validform) {
+         const dataJson = JSON.stringify(data);
+
+          const req = await fetch(`${process.env.VUE_APP_API_URL}pedidos/${this.idpedido}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: dataJson,
+          });
+          this.getPedidos();
+      }
+
+    },
     async deleteObservacao(observacaoId) {
       const req = await fetch(
         `${process.env.VUE_APP_API_URL}observacao/${observacaoId}`,
@@ -248,6 +293,8 @@ export default {
         this.status = data["status"];
         this.observacao = data["observacao"];
         this.observacao_edicao = "";
+        this.equipamento =data["equipamento"]
+        this.reparo=data["reparo"]
       }
     },
     changeCss(ativo) {

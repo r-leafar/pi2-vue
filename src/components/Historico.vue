@@ -213,8 +213,7 @@ export default {
         const req = await fetch(`${process.env.VUE_APP_API_URL}${query_api}`);
         const data = await req.json();
         this.lista_pedidos = data;
-        console.log(query_api);
-        console.log(this.lista_pedidos);
+        
       }
     },
     changeCss(ativo) {

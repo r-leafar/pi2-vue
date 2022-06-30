@@ -154,6 +154,7 @@ export default {
       in: null,
       local: null,
       status: null,
+      reparo:null,
       lista_pedidos: null,
       id: null,
       usuario: {
@@ -168,9 +169,6 @@ export default {
     };
   },
   methods: {
-    foo(){
-      alert("oie")
-    },
     async excluirPedido(idpedido) {
       let escolha = confirm("Você tem certeza que deseja excluir esse pedido?");
       if (escolha === true) {
@@ -227,7 +225,7 @@ export default {
         data: this.data,
         status: this.status,
         usuario: this.usuario,
-        reparo: null,
+        reparo: this.reparo,
       };
 
       const dataJson = JSON.stringify(data);
@@ -253,7 +251,7 @@ export default {
         data: dayjs().format("YYYY-MM-DD"),
         status: this.status,
         usuario: this.usuario,
-        reparo: "",
+        reparo: this.reparo,
       };
 
       let validform = true;
