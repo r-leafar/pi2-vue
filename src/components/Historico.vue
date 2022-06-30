@@ -2,7 +2,7 @@
   <router-link to="/">
     <Navbar @toggleCss="toggleCssNot" />
   </router-link>
-  <Menu :toggleCss="storeToggle.getValue"/>
+  <Menu :toggleCss="storeToggle.getValue" />
   <main>
     <div id="secao1">
       <div style="width: 15%; float: left">
@@ -12,8 +12,14 @@
           </div>
           <div class="rTableRow">
             <div class="rTableCell">
-              <input type="date" id="start" name="trip-start" min="2000-01-01" max="2023-01-01"
-                v-model="data_inicial" />
+              <input
+                type="date"
+                id="start"
+                name="trip-start"
+                min="2000-01-01"
+                max="2023-01-01"
+                v-model="data_inicial"
+              />
             </div>
           </div>
         </div>
@@ -23,13 +29,23 @@
           </div>
           <div class="rTableRow">
             <div class="rTableCell">
-              <input type="date" id="start" name="trip-start" min="2000-01-01" max="2023-01-01" v-model="data_final" />
+              <input
+                type="date"
+                id="start"
+                name="trip-start"
+                min="2000-01-01"
+                max="2023-01-01"
+                v-model="data_final"
+              />
             </div>
           </div>
         </div>
       </div>
       <div>
-        <div class="rTable" style="margin-top: 15px; padding-left: 100px; padding-top: 2%">
+        <div
+          class="rTable"
+          style="margin-top: 15px; padding-left: 100px; padding-top: 2%"
+        >
           <div class="rTableRow">
             <div class="rTableHead">Frota</div>
             <div class="rTableHead">Trem</div>
@@ -37,7 +53,13 @@
           </div>
           <div class="rTableRow">
             <div class="rTableCell">
-              <select name="frota" v-on:change="MontarListaTrem" :disabled="frota == ''" v-model="frota" id="frota">
+              <select
+                name="frota"
+                v-on:change="MontarListaTrem"
+                :disabled="frota == ''"
+                v-model="frota"
+                id="frota"
+              >
                 <option disabled value="">Selecione</option>
                 <option v-for="frota in frotas" :key="frota.id" :value="frota.nome">
                   {{ frota.nome }}
@@ -60,13 +82,16 @@
       </div>
       <div id="secao1_3">
         <button id="btn-historico-buscar" v-on:click="buscarHistorico">
-          Buscar{{ store.counter }}
+          Buscar
         </button>
       </div>
     </div>
 
     <div id="secao2">
-      <div class="rTable" style="width: 100%; margin-top: 15px; padding-left: 0px; padding-top: 3%">
+      <div
+        class="rTable"
+        style="width: 100%; margin-top: 15px; padding-left: 0px; padding-top: 3%"
+      >
         <div class="rTableRow">
           <div class="rTableHead">Id</div>
           <div class="rTableHead">Usuario</div>
@@ -86,7 +111,10 @@
           <div class="rTableCell">{{ pedido.reparo }}</div>
           <div class="rTableCell">{{ pedido.data }}</div>
           <div class="rTableCell">
-            {{ "pedido.observacao.pop()" }}
+            <span v-if="pedido.observacao.length!==0">
+              {{ pedido.observacao[pedido.observacao.length-1].descricao }}
+            </span>
+
             <button style="float: right" v-on:click="carregarApontamento(pedido.id)">
               ###
             </button>
@@ -113,7 +141,8 @@ export default {
 
     return {
       // you can return the whole store instance to use it in the template
-      store, storeToggle
+      store,
+      storeToggle,
     };
   },
   data() {
@@ -130,8 +159,7 @@ export default {
       css_one: "#F00AC9",
       css_two: "#4784fb",
       css_tree: "#c4c4c4",
-      css_four: "black"
-
+      css_four: "black",
     };
   },
   methods: {
@@ -178,17 +206,18 @@ export default {
         }
       }*/
       if (validform) {
-       let  query_api = `pedidos?descricao_falha_like=${this.sistema}`
-        query_api += this.trem !== null ?`&trem=${this.trem}`:""
-        query_api += this.data_inicial !== null && this.data_final!==null ?`&data_gte=${this.data_inicial}&data_lte=${this.data_final}`:""
+        let query_api = `pedidos?_embed=observacao&descricao_falha_like=${this.sistema}`;
+        query_api += this.trem !== null ? `&trem=${this.trem}` : "";
+        query_api += this.data_inicial !== null && this.data_final !== null ? `&data_gte=${this.data_inicial}&data_lte=${this.data_final}`: "";
 
         const req = await fetch(`${process.env.VUE_APP_API_URL}${query_api}`);
         const data = await req.json();
         this.lista_pedidos = data;
+        console.log(query_api);
+        console.log(this.lista_pedidos);
       }
     },
     changeCss(ativo) {
-
       if (ativo) {
         this.css_one = "#F00AC9";
         this.css_two = "#4784fb";
@@ -200,7 +229,8 @@ export default {
         this.css_tree = "black";
         this.css_four = "white";
       }
-    }, toggleCssNot() {
+    },
+    toggleCssNot() {
       this.changeCss(!this.storeToggle.getValue);
     },
     toggleCss() {
@@ -221,7 +251,8 @@ export default {
   margin-right: 25%;
 }
 
-#secao2 {}
+#secao2 {
+}
 
 #btn-historico-buscar {
   font-size: 25px;
@@ -239,14 +270,14 @@ main {
   height: 100vh;
   background-color: v-bind(css_one);
 }
-#trem{
-  width:50%;
+#trem {
+  width: 50%;
 }
-#frota{
-  width:50%;
+#frota {
+  width: 50%;
 }
-#sistema{
-  width:90%;
+#sistema {
+  width: 90%;
 }
 /*Formatação da tabela*/
 .rTable {
